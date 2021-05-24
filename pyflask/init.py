@@ -1,17 +1,5 @@
-import os
-import sys
-import datetime
-import click
-import uuid
-import simplejson as json
 import mysql.connector
 from mysql.connector import errorcode
-
-from flask import Flask, request
-
-
-
-cnx = mysql.connector.connect(user='348proj', passwd='dev000000')
 
 DBName = 'TestDB'
 
@@ -22,26 +10,26 @@ TABLES['main'] = (
     'last_name varchar(15) '
     ')'
 )
- 
-"""Initialize the database."""
+
+cnx = mysql.connector.connect(user='348proj', passwd='dev000000')
 cursor = cnx.cursor()
-if i:  
-    cm = 'USE %(DBName)s; SOURCE test.sql'
-else:
-    cm = 'CREATE DATABASE {}'.format(DBName)
+
+# Init Database
+cm = 'CREATE DATABASE IF NOT EXISTS {}'.format(DBName)
+
 try:
     cursor.execute(cm, {'DBName': DBName})
     cnx.commit()
-    click.echo('Initialized database.') 
     cnx.database = DBName
 except mysql.connector.Error as err:
     print("Failed creating database: {}".format(err))
     exit(1)
 
-if i:
-    return
+print("Success creating database: {}".format(DBName))
 
-"""Initialize Table"""
+
+# Initialize Table
+
 for table_name in TABLES:
     table_description = TABLES[table_name]
     try:
