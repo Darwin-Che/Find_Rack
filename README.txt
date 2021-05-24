@@ -1,5 +1,6 @@
 # Movie_List
 
+
 ## Prerequisite
 
 - Python3
@@ -8,20 +9,28 @@
 pip install -r pyflask/requirement.txt
 ```
 
+
 ## Demo Usage
+
 
 ### Create User
 
 execute the content of create_user.txt in mysql root user to have user "348proj" and passwd "dev000000"
 
+
+
 ### Init db
+
 Run in the pyflask directory
 ```
 python init.py
 ```
 Will create the database called 'TestDB' and a table 'main'
 
+
+
 ### Put data in db
+
 Run in the pyflask directory
 ```
 flask run
