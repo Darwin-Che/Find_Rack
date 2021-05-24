@@ -33,21 +33,28 @@ def data():
     
     return ret
     
+
 def dbget(form):
     ret = ""
     cursor = cnx.cursor()
 
     try:
         q = []
+        cond = ""
+        if form.get('first_name'):
+            cond += 'AND first_name=%(first_name)s'
+        if form.get('last_name'):
+            cond += 'AND last_name=%(last_name)s'
+        
         cursor.execute(
             (
-                "SELECT * FROM main "
+                "SELECT * FROM main WHERE true " + cond
             ),
             form
         )
         for (first_name, last_name) in cursor:
             print("first_name : {}; last_name : {}".format(first_name,last_name))
-            q.append({"firstname" : first_name, "lastname" : last_name})
+            q.append({"first_name" : first_name, "last_name" : last_name})
 
         ret = json.dumps(q, indent=4 * ' ')
     except mysql.connector.Error as err:
@@ -58,7 +65,7 @@ def dbget(form):
 
 def dbput(form):
     cursor = cnx.cursor()
-    
+
     try:
         cursor.execute(
             (
