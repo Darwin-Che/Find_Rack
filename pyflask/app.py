@@ -13,8 +13,9 @@ app = Flask(__name__)
 
 DBName = 'TestDB'
 
-cnx = mysql.connector.connect(user='348proj', passwd='dev000000', database=DBName)
-
+sql_host = os.getenv('DATABASE_HOST', default='localhost')
+sql_port = int(os.getenv('DATABASE_PORT', default='3306'))
+cnx = mysql.connector.connect(host=sql_host, port=sql_port, user='348proj', passwd='dev000000', database=DBName)
 
 @app.route('/data', methods=['POST'])
 def data():
