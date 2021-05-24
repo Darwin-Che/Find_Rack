@@ -1,0 +1,34 @@
+version: '2'
+
+services:
+    app:
+        build:
+            context: ../
+            dockerfile: docker/app/Dockerfile
+        image: cs348-movielist-app-image
+        container_name: cs348_movielist_app
+        restart: always
+        depends_on:
+            - mysql
+        volumes:
+            - ../:/app
+            - app_context:/context
+        ports:
+            - "5000:5000"
+        environment:
+            DATABASE_HOST: cs348_movielist_mysql
+    mysql:
+        image: mysql:8.0.25
+        container_name: cs348_movielist_mysql
+        restart: always
+        expose:
+            - '3306'
+        ports:
+            - "13306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: yolo
+        volumes:
+            - database:/var/lib/mysql
+volumes:
+    app_context:
+    database:
