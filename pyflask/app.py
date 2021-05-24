@@ -18,8 +18,7 @@ cnx = mysql.connector.connect(user='348proj', passwd='dev000000', database=DBNam
 
 @app.route('/data', methods=['POST'])
 def data():
-    cursor = cnx.cursor()
-    
+
     print(json.dumps(request.json, sort_keys=True, indent=4 * ' '))
     action = request.json.get('action')
 
@@ -28,15 +27,15 @@ def data():
     if not action:
         ret = '''<p>Error</p>'''
     if action == 'get':
-        ret = dbget(request.json, cursor)
+        ret = dbget(request.json)
     if action == 'put':
-        ret = dbput(request.json, cursor)
+        ret = dbput(request.json)
     
-    cursor.close()
     return ret
     
-def dbget(form, cursor):
+def dbget(form):
     ret = ""
+    cursor = cnx.cursor()
 
     try:
         q = []
@@ -54,9 +53,12 @@ def dbget(form, cursor):
     except mysql.connector.Error as err:
         print(err)
     
+    cursor.close()
     return ret
 
-def dbput(form, cursor):
+def dbput(form):
+    cursor = cnx.cursor()
+    
     try:
         cursor.execute(
             (
@@ -70,6 +72,7 @@ def dbput(form, cursor):
     except mysql.connector.Error as err:
         print(err)
 
+    cursor.close()
     return 'Success Put!'
 
     
