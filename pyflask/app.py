@@ -23,12 +23,38 @@ def data():
     print(json.dumps(request.json, sort_keys=True, indent=4 * ' '))
     action = request.json.get('action')
 
+
+    ret = ""
     if not action:
-        return '''<p>Error</p>'''
-    # if action == 'get':
-    #     return dbget(request.json)
+        ret = '''<p>Error</p>'''
+    if action == 'get':
+        ret = dbget(request.json, cursor)
     if action == 'put':
-        return dbput(request.json, cursor)
+        ret = dbput(request.json, cursor)
+    
+    cursor.close()
+    return ret
+    
+def dbget(form, cursor):
+    ret = ""
+
+    try:
+        q = []
+        cursor.execute(
+            (
+                "SELECT * FROM main "
+            ),
+            form
+        )
+        for (first_name, last_name) in cursor:
+            print("first_name : {}; last_name : {}".format(first_name,last_name))
+            q.append({"firstname" : first_name, "lastname" : last_name})
+
+        ret = json.dumps(q, indent=4 * ' ')
+    except mysql.connector.Error as err:
+        print(err)
+    
+    return ret
 
 def dbput(form, cursor):
     try:
@@ -43,6 +69,8 @@ def dbput(form, cursor):
         cnx.commit()
     except mysql.connector.Error as err:
         print(err)
-    return 'Success!'
+
+    return 'Success Put!'
 
     
+
