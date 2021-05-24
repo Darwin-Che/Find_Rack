@@ -62,3 +62,12 @@ Send POST request to the '/data' with format
 ```
 Will return a list of entries in JSON form
 
+Send POST request to the '/data' with format
+```
+{
+    "action": "get", 
+    "first_name" : "fnxxx"
+}
+```
+Will return a list of entries satisfying "first_name"="fnxxx" in JSON form, "last_name" option is also available, can be combined. 
+
