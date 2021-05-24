@@ -46,3 +46,19 @@ Send POST request to the '/data' with format
 ```
 Will register the name into the table main
 
+
+### Query data in db
+
+Run in the pyflask directory
+```
+flask run
+```
+
+Send POST request to the '/data' with format
+```
+{
+    "action": "get"
+}
+```
+Will return a list of entries in JSON form
+
