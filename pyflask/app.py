@@ -11,7 +11,7 @@ from flask import Flask, request
 
 app = Flask(__name__) 
 
-DBName = 'TestDB'
+DBName = 'MovieList'
 
 sql_host = os.getenv('DATABASE_HOST', default='localhost')
 sql_port = int(os.getenv('DATABASE_PORT', default='3306'))

@@ -14,7 +14,7 @@ pip install -r pyflask/requirement.txt
 2. Execute `docker-compose up`
 3. The application is now running.
 
-You can now connect to the application here: http://127.0.0.1:5000. If you need to debug the database, connect to it here: `127.0.0.1:13306`.
+You can now connect to the application here: http://127.0.0.1:5000. If you need to debug the database, connect to it here: `127.0.0.1:13306` (see `create_user.txt` for the credentials).
 
 The application stores it's state/data in two docker volumes:
 
