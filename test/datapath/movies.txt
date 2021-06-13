@@ -1,4 +1,0 @@
-mn01;Title of mn01;2013-01-01
-mn02;笑傲江湖 mn02;1998-12-31
-mn03;Title of mn03;2005-04-04
-mn04;Title of mn04;2005-03-04
