@@ -40,7 +40,6 @@ def insertSQL(table, values):
 
 def loadSample():
     p = {"path" : str(Path('.').absolute())}
-    print(Path('..', 'populate_table.sql').read_text().replace("path", p["path"]))
     for a in cursor.execute(Path('..', 'drop_table.sql').read_text().replace("path", p["path"]), multi=True):
         pass
     for a in cursor.execute(Path('..', 'create_table.sql').read_text().replace("path", p["path"]), multi=True):
@@ -56,8 +55,11 @@ def loadSample():
 loadSample()
 cnx.commit()
 
-cursor.execute("show tables")
-# cnx.close()
+e = cursor.execute("show tables")
+for r in e.fetchall():
+    print(r)
+
+cnx.close()
 # for s in cursor.execute("show tables").fetchall():
 #     print(s)
 # for moviename in querySQL("Movies", "*", "titleid"):
