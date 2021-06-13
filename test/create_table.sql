@@ -17,8 +17,8 @@ CREATE TABLE Casts (
 CREATE TABLE Cast_Movie (
     castid      VARCHAR(11)  NOT NULL,
     titleid     VARCHAR(11)  NOT NULL,
-    roll        VARCHAR(20)  NOT NULL,
-    PRIMARY KEY (castid, titleid, roll),
+    role        VARCHAR(20)  NOT NULL,
+    PRIMARY KEY (castid, titleid, role),
     FOREIGN KEY (castid) REFERENCES Casts(castid),
     FOREIGN KEY (titleid) REFERENCES Movies(titleid)
 );
