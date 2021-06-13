@@ -80,6 +80,13 @@ def query_movies():
             cursor.execute(query, params)
             return json.dumps(cursor.fetchall())
 
+@app.route('/api/users')
+def query_users():
+    with cnx() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT userid, username FROM Users")
+            return json.dumps(cursor.fetchall())
+
 @app.route('/api/users', methods=['POST'])
 def create_user():
     id = ''.join(random.choices(string.ascii_letters + string.digits, k=11))
@@ -90,5 +97,5 @@ def create_user():
         with conn.cursor() as cursor:
             cursor.execute("INSERT INTO Users VALUES (%s, %s)", (id, username))
         conn.commit()
-
     return json.dumps({"userid":id})
+
