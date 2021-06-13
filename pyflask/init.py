@@ -37,7 +37,7 @@ print("Success creating database: {}".format(DBName))
 def loaddata():
 
     path_table_sql = 'test'   # the path for the .sql files
-    path_data = str(P   ath('test/datapath').absolute())   # replace 'path' in the script with path_data
+    path_data = str(Path('test/datapath').absolute())   # replace 'path' in the script with path_data
 
     
     for a in cursor.execute(Path(path_table_sql, 'drop_table.sql').read_text().replace("path", path_data), multi=True):
@@ -52,7 +52,7 @@ def loaddata():
     else:
         for a in cursor.execute(Path(path_table_sql, 'populate_table_all.sql').read_text().replace("path", path_data), multi=True):
             pass
-
+            
     cnx.commit()
 
 loaddata()
