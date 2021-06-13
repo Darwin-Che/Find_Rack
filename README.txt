@@ -14,8 +14,14 @@ pip install -r pyflask/requirement.txt
 2. Execute `docker-compose up`
 3. The application is now running.
 
-You can now connect to the application here: http://127.0.0.1:5000. If you need to debug the database, connect to it here: `127.0.0.1:13306`.
+You can now connect to the application here: http://127.0.0.1:5000. If you need to debug the database, connect to it here: `127.0.0.1:13306` (see `create_user.txt` for the credentials).
 
+The application stores it's state/data in two docker volumes:
+
+- `cs348_movielist_database`: The SQL database
+- `cs348_movielist_app_context`: Misc files
+
+Note that the application will automatically create the required tables and populate the database with data on first start. If you need to reset the database and bring the application to it's initial state, you must `docker-compose down` and delete the 2 volumes above.
 
 ## Demo Usage
 
