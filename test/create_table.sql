@@ -50,7 +50,7 @@ CREATE TABLE List_Movie (
 
 CREATE TABLE Genre_Movie (
     titleid      VARCHAR(11) NOT NULL,
-    genre        CHAR(20) NOT NULL,
+    genre        VARCHAR(20) NOT NULL,
     PRIMARY KEY (titleid, genre),
     FOREIGN KEY (titleid) REFERENCES Movies(titleid)
 );
