@@ -85,7 +85,7 @@ def create_user():
     id = ''.join(random.choices(string.ascii_letters + string.digits, k=11))
     username = request.json.get('username')
     if username is None:
-        raise RuntimeError('Title cannot be None!')
+        raise RuntimeError('Username cannot be None!')
     with cnx() as conn:
         with conn.cursor() as cursor:
             cursor.execute("INSERT INTO Users VALUES (%s, %s)", (id, username))
