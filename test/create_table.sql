@@ -1,12 +1,12 @@
 CREATE TABLE Movies (
     titleid     VARCHAR(11)  NOT NULL PRIMARY KEY,
     title       VARCHAR(100) NOT NULL,
-    releasedate    DATE
+    releaseyear    YEAR
 );
 
 CREATE TABLE Users (
     userid     VARCHAR(11)  NOT NULL PRIMARY KEY,
-    username   VARCHAR(20)  NOT NULL 
+    username   VARCHAR(20)  NOT NULL UNIQUE 
 );
 
 CREATE TABLE Casts (
