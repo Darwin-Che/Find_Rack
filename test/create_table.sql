@@ -1,7 +1,7 @@
 CREATE TABLE Movies (
     titleid     VARCHAR(11)  NOT NULL PRIMARY KEY,
     title       VARCHAR(100) NOT NULL,
-    releasedate    DATE
+    releaseyear    YEAR
 );
 
 CREATE TABLE Users (

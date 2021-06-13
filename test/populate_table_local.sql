@@ -1,60 +1,60 @@
-LOAD DATA INFILE "path/movies.txt"
+LOAD DATA INFILE "/Users/czc/348project/test/datapath/movies.txt"
 INTO TABLE Movies
 CHARACTER SET utf8mb4
 COLUMNS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n';
 
-LOAD DATA INFILE "path/casts.txt"
+LOAD DATA INFILE "/Users/czc/348project/test/datapath/casts.txt"
 INTO TABLE Casts
 CHARACTER SET utf8mb4
 COLUMNS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n';
 
-LOAD DATA INFILE "path/users.txt"
+LOAD DATA INFILE "/Users/czc/348project/test/datapath/users.txt"
 INTO TABLE Users
 CHARACTER SET utf8mb4
 COLUMNS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n';
 
-LOAD DATA INFILE "path/lists.txt"
+LOAD DATA INFILE "/Users/czc/348project/test/datapath/lists.txt"
 INTO TABLE Lists
 CHARACTER SET utf8mb4
 COLUMNS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n';
 
-LOAD DATA INFILE "path/comments.txt"
+LOAD DATA INFILE "/Users/czc/348project/test/datapath/comments.txt"
 INTO TABLE Comments
 CHARACTER SET utf8mb4
 COLUMNS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n';
 
-LOAD DATA INFILE "path/cast_movie.txt"
+LOAD DATA INFILE "/Users/czc/348project/test/datapath/cast_movie.txt"
 INTO TABLE Cast_Movie
 CHARACTER SET utf8mb4
 COLUMNS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n';
 
-LOAD DATA INFILE "path/list_movie.txt"
+LOAD DATA INFILE "/Users/czc/348project/test/datapath/list_movie.txt"
 INTO TABLE List_Movie
 CHARACTER SET utf8mb4
 COLUMNS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n';
 
-LOAD DATA INFILE "path/genre_movie.txt"
+LOAD DATA INFILE "/Users/czc/348project/test/datapath/genre_movie.txt"
 INTO TABLE Genre_Movie
 CHARACTER SET utf8mb4
 COLUMNS TERMINATED BY ';'
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n';
 
-LOAD DATA INFILE "path/subscription.txt"
+LOAD DATA INFILE "/Users/czc/348project/test/datapath/subscription.txt"
 INTO TABLE Subscription
 CHARACTER SET utf8mb4
 COLUMNS TERMINATED BY ';'
