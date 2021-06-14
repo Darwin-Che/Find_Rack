@@ -1,4 +1,5 @@
 import os
+import uuid
 import mysql.connector
 from mysql.connector import errorcode
 from pathlib import Path
@@ -7,6 +8,10 @@ from init import *
 
 def format_input(inp):
     return f'%{inp}%'
+
+def show_result(cursor):
+    for r in cursor.fetchall():
+        print(r)
 
 
 print('Searching by title')
@@ -81,3 +86,27 @@ for r in cursor.fetchall():
     print(r)
 
 
+print('Create new list')
+
+print('Original lists')
+cursor.execute('SELECT * FROM Lists')
+for r in cursor.fetchall():
+    print(r)
+
+userid = ''
+new_listid = uuid.uuid4().hex
+new_listname = "Darwin's favourite"
+
+new_list = (new_listid, userid, new_listname)
+
+query6='''
+INSERT INTO Lists
+(listid,userid,listname)
+VALUES(%s, %s, %s)
+'''
+
+cursor.execute(query6, new_list)
+
+print('New lists')
+cursor.execute('SELECT * FROM Lists')
+show_result(cursor)
