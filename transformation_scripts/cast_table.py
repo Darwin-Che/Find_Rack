@@ -2,7 +2,6 @@ import pandas as pd
 
 print('Reading original dataset...')
 title_crew = pd.read_csv('title.crew.tsv', sep='\t').drop(columns=['directors'])
-writer_dict = {'tconst': [], 'nconst': [], 'category': []}
 
 print('Executing transform 1/5...')
 filtered_title_crew = title_crew[title_crew.writers.notnull() & (title_crew.writers != '\\N')]
