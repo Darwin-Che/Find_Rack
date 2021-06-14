@@ -5,8 +5,8 @@ from pathlib import Path
 from init import *
 
 
-def format_input(in):
-    return f'%{in}%'
+def format_input(inp):
+    return f'%{inp}%'
 
 
 print('Searching by title')
