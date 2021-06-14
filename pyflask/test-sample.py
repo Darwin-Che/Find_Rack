@@ -24,8 +24,7 @@ SELECT title,releaseyear,runtimemin FROM Movies
 WHERE title LIKE %s
 '''
 cursor.execute(query1, (input_title,))
-for r in cursor.fetchall():
-    print(r)
+show_result(cursor)
 
 print('Searching by year')
 
@@ -36,8 +35,7 @@ SELECT title,releaseyear,runtimemin FROM Movies
 WHERE releaseyear=%s
 '''
 cursor.execute(query2, (input_year,))
-for r in cursor.fetchall():
-    print(r)
+show_result(cursor)
 
 
 print('Searching by actor/actress')
@@ -52,8 +50,7 @@ WHERE titleid IN
 WHERE castname LIKE %s AND (role="actor" OR role="actress"))
 '''
 cursor.execute(query3, (input_actor,))
-for r in cursor.fetchall():
-    print(r)
+show_result(cursor)
 
 print('Searching by director')
 
@@ -67,8 +64,8 @@ WHERE titleid IN
 WHERE castname LIKE %s AND role="director")
 '''
 cursor.execute(query4, (input_director,))
-for r in cursor.fetchall():
-    print(r)
+show_result(cursor)
+
 
 print('Searching by genre')
 
@@ -82,16 +79,15 @@ WHERE titleid IN
 WHERE genre LIKE %s)
 '''
 cursor.execute(query5, (input_genre,))
-for r in cursor.fetchall():
-    print(r)
+show_result(cursor)
+
 
 
 print('Create new list')
 
 print('Original lists')
 cursor.execute('SELECT * FROM Lists')
-for r in cursor.fetchall():
-    print(r)
+show_result(cursor)
 
 userid = 'e74e269da2494fe594f55bad7c21b651'
 new_listid = uuid.uuid4().hex
