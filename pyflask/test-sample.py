@@ -1,5 +1,6 @@
 import os
 import uuid
+import datetime
 import mysql.connector
 from mysql.connector import errorcode
 from pathlib import Path
@@ -24,8 +25,7 @@ SELECT title,releaseyear,runtimemin FROM Movies
 WHERE title LIKE %s
 '''
 cursor.execute(query1, (input_title,))
-for r in cursor.fetchall():
-    print(r)
+show_result(cursor)
 
 print('Searching by year')
 
@@ -36,8 +36,7 @@ SELECT title,releaseyear,runtimemin FROM Movies
 WHERE releaseyear=%s
 '''
 cursor.execute(query2, (input_year,))
-for r in cursor.fetchall():
-    print(r)
+show_result(cursor)
 
 
 print('Searching by actor/actress')
@@ -52,8 +51,7 @@ WHERE titleid IN
 WHERE castname LIKE %s AND (role="actor" OR role="actress"))
 '''
 cursor.execute(query3, (input_actor,))
-for r in cursor.fetchall():
-    print(r)
+show_result(cursor)
 
 print('Searching by director')
 
@@ -67,8 +65,8 @@ WHERE titleid IN
 WHERE castname LIKE %s AND role="director")
 '''
 cursor.execute(query4, (input_director,))
-for r in cursor.fetchall():
-    print(r)
+show_result(cursor)
+
 
 print('Searching by genre')
 
@@ -82,16 +80,15 @@ WHERE titleid IN
 WHERE genre LIKE %s)
 '''
 cursor.execute(query5, (input_genre,))
-for r in cursor.fetchall():
-    print(r)
+show_result(cursor)
+
 
 
 print('Create new list')
 
 print('Original lists')
 cursor.execute('SELECT * FROM Lists')
-for r in cursor.fetchall():
-    print(r)
+show_result(cursor)
 
 userid = 'e74e269da2494fe594f55bad7c21b651'
 new_listid = uuid.uuid4().hex
@@ -133,4 +130,51 @@ print('Updated list')
 cursor.execute('SELECT * FROM List_Movie WHERE listid=%s', (listid,))
 show_result(cursor)
 
+print('New Subscription')
 
+subscriber = '607cc790aa6046bcb6bd1ef91ba21b9d' 
+subscribeto = 'f5766a1b2bbf47548e6df15c165b2589' 
+new_subscription = (subscriber, subscribeto)
+
+print('Original Subscriptions')
+cursor.execute('SELECT * FROM Subscription')
+show_result(cursor)
+
+query8='''
+INSERT INTO Subscription
+(subscriber,subscribeto)
+VALUES(%s, %s)
+'''
+
+cursor.execute(query8, new_subscription)
+
+print('Updated Subscriptions')
+cursor.execute('SELECT * FROM Subscription')
+show_result(cursor)
+
+
+print('Create new comment')
+
+print('Original comments')
+cursor.execute('SELECT * FROM Comments')
+show_result(cursor)
+
+commentid = uuid.uuid4().hex
+titleid = 'mn08'
+userid = 'e74e269da2494fe594f55bad7c21b651'
+comment = "J'aime Elle !"
+publishtime = str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+
+new_comment = (commentid, titleid, userid, comment, publishtime)
+
+query9='''
+INSERT INTO Comments
+(commentid,titleid,userid,comment,publishtime)
+VALUES(%s, %s, %s, %s, %s)
+'''
+
+cursor.execute(query9, new_comment)
+
+print('Updated comments')
+cursor.execute('SELECT * FROM Comments')
+show_result(cursor)
