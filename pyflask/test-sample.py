@@ -178,3 +178,20 @@ cursor.execute(query9, new_comment)
 print('Updated comments')
 cursor.execute('SELECT * FROM Comments')
 show_result(cursor)
+
+print('Randomly select a movie of a given genre')
+
+input_genre = 'Drama'
+input_genre = format_input(input_genre)
+
+query10 = '''
+SELECT title,releaseyear,runtimemin FROM Movies
+WHERE titleid IN
+(SELECT titleid FROM Genre_Movie
+WHERE genre LIKE %s
+ORDER BY RAND() LIMIT 1)
+'''
+cursor.execute(query10, (input_genre,))
+print('The randomly fenerated movie is')
+show_result(cursor)
+
