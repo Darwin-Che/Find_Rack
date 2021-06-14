@@ -1,5 +1,8 @@
 castid;movieid;role
-cn01;mn02;director
-cn03;mn01;primary actor
-cn01;mn01;director
-cn02;mn04;u
+cn01;mn07;director
+cn03;mn04;actor
+cn03;mn05;actor
+cn03;mn06;actor
+cn05;mn02;actress
+cn04;mn08;actress
+cn02;mn07;actor
