@@ -12,8 +12,8 @@ CREATE TABLE Users (
 );
 
 CREATE TABLE Casts (
-    castid      VARCHAR(11) NOT NULL PRIMARY KEY,
-    castname    VARCHAR(50) NOT NULL
+    castid      VARCHAR(11)  NOT NULL PRIMARY KEY,
+    castname    VARCHAR(200) NOT NULL
 );
 
 CREATE TABLE Cast_Movie (

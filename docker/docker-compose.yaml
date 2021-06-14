@@ -25,10 +25,13 @@ services:
             - '3306'
         ports:
             - "13306:3306"
+        command: --secure-file-priv=
         environment:
             MYSQL_ROOT_PASSWORD: yolo
         volumes:
+            - ../:/app
             - database:/var/lib/mysql
+            - app_context:/context
 volumes:
     app_context:
     database:

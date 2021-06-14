@@ -16,6 +16,7 @@ DBName = 'MovieList'
 sql_host = os.getenv('DATABASE_HOST', default='localhost')
 sql_port = int(os.getenv('DATABASE_PORT', default='3306'))
 cnx = mysql.connector.connect(host=sql_host, port=sql_port, user='348proj', passwd='dev000000')
+cnx.autocommit = True # For better performance
 cursor = cnx.cursor()
 
 # Init Database
@@ -23,13 +24,12 @@ cm = 'CREATE DATABASE IF NOT EXISTS {}'.format(DBName)
 
 try:
     cursor.execute(cm, {'DBName': DBName})
-    cnx.commit()
     cnx.database = DBName
 except mysql.connector.Error as err:
     print("Failed creating database: {}".format(err))
     exit(1)
 
-print("Success creating database: {}".format(DBName))
+print("Success creating database: {}, now inserting data...".format(DBName), flush=True)
 
 
 # Initialize Table
@@ -39,6 +39,7 @@ def loaddata():
     path_table_sql = 'test'   # the path for the .sql files
     path_data = str(Path('test/datapath').absolute())   # replace 'path' in the script with path_data
 
+    cursor.execute('SET FOREIGN_KEY_CHECKS=0;')
     
     for a in cursor.execute(Path(path_table_sql, 'drop_table.sql').read_text().replace("path", path_data), multi=True):
         pass
@@ -52,11 +53,13 @@ def loaddata():
     else:
         for a in cursor.execute(Path(path_table_sql, 'populate_table_all.sql').read_text().replace("path", path_data), multi=True):
             pass
-            
-    cnx.commit()
+
+    print("Repairing foreign keys...", flush=True)
+    for a in cursor.execute(Path(path_table_sql, 'repair_foreign_keys.sql').read_text().replace("path", path_data), multi=True):
+        pass
+    cursor.execute('SET FOREIGN_KEY_CHECKS=1;')
 
 loaddata()
-
 
 #for table_name in TABLES:
 #    table_description = TABLES[table_name]

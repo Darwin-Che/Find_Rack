@@ -2,3 +2,4 @@ Flask==2.0.1
 simplejson==3.17.2
 mysql-connector-python==8.0.25
 PyJWT==2.1.0
+pandas==1.2.4
