@@ -8,8 +8,11 @@ print('Removing invalid data...', flush=True)
 # We detect these rows by checking whether or not the row has the correct amount of columns
 # We then discard these rows
 title_basics = title_basics[title_basics[title_basics.columns[-1]].notnull()]
+# Discard non-movies
+title_basics = title_basics[title_basics.titleType == 'movie']
 # Discard rows movies with crazy long titles
 title_basics = title_basics[title_basics.originalTitle.str.len() <= 400]
+# Drop useless columns
 title_basics = title_basics.drop(columns=['titleType', 'primaryTitle', 'isAdult', 'endYear'])
 
 print('Executing transform 1/5...', flush=True)
