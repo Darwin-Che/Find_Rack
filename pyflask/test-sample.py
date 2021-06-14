@@ -5,12 +5,12 @@ from pathlib import Path
 from init import *
 
 input_title = 'Back to the Future'
+input_title = f'%{input_title}%'
 
 query1 = '''
 SELECT title,releaseyear,runtimemin FROM Movies
-WHERE title LIKE "%%s%"
+WHERE title LIKE %s
 '''
-cursor.execute(query1 % input_title)
+cursor.execute(query1, (input_title,))
 for r in cursor.fetchall():
     print(r)
-
