@@ -93,7 +93,7 @@ cursor.execute('SELECT * FROM Lists')
 for r in cursor.fetchall():
     print(r)
 
-userid = ''
+userid = 'e74e269da2494fe594f55bad7c21b651'
 new_listid = uuid.uuid4().hex
 new_listname = "Darwin's favourite"
 
@@ -110,3 +110,27 @@ cursor.execute(query6, new_list)
 print('New lists')
 cursor.execute('SELECT * FROM Lists')
 show_result(cursor)
+
+print('Add a new movie to a list')
+
+listid = new_listid
+titleid = 'mn07'
+new_entry = (listid, titleid)
+
+print('Original list')
+cursor.execute('SELECT * FROM List_Movie WHERE listid=%s', (listid,))
+show_result(cursor)
+
+query7='''
+INSERT INTO List_Movie
+(listid,titleid)
+VALUES(%s, %s)
+'''
+
+cursor.execute(query7, new_entry)
+
+print('Updated list')
+cursor.execute('SELECT * FROM List_Movie WHERE listid=%s', (listid,))
+show_result(cursor)
+
+
