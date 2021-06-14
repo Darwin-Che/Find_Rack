@@ -17,7 +17,7 @@ print('Executing transform 4/5...', flush=True)
 title_principals = pd.read_csv('title.principals.tsv', sep='\t').drop(columns=['ordering', 'job', 'characters']).append(filtered_title_crew)
 
 print('Executing transform 5/5...', flush=True)
-cast_table = title_principals.rename(columns={'category': 'role'})
+cast_table = title_principals.rename(columns={'category': 'role'})[['nconst','tconst','role']]
 
 print('Writing outputs...', flush=True)
 cast_table.to_csv('cast.scsv', sep=';', index=False)
