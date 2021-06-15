@@ -43,3 +43,12 @@ Will create the database called 'MovieList' and load in some sample data.
 Run: `flask run --host=0.0.0.0` inside the `pyflask` directory.
 
 You can now connect to the application here: http://127.0.0.1:5000.
+
+## Testing
+- The testing code for task 5 is in the `pyflask/test-sample.py`
+- Some sample output of running the above test program can be found here: `test/test-sample.out`
+
+## Loading in real data
+Tools for transforming and loading the IMDB database can be found in the `transformation_scripts` folder.
+
+Additionally, if you use docker you can run `USE_REAL_DATA=true docker-compose up` instead of the normal `docker-compose up` command to automatically fetch, transform and load the IMDB dataset. Note that this is a very slow process however (several hours).
