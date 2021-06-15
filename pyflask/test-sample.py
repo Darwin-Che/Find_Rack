@@ -29,6 +29,8 @@ ORDER BY titleid
 cursor.execute(query1, (input_title,))
 show_result(cursor)
 
+
+
 print('Searching by year')
 
 input_year = '2016'
@@ -87,7 +89,6 @@ ORDER BY titleid
 '''
 cursor.execute(query5, (input_genre,))
 show_result(cursor)
-
 
 
 print('Create new list')
@@ -201,5 +202,18 @@ LIMIT 1
 
 cursor.execute(query10, (input_genre,))
 print('The randomly generated movie is')
+show_result(cursor)
+
+
+print('Viewing comments of a movie')
+
+titleid = 'mn08'
+
+query11 = '''
+SELECT comment,username,publishtime FROM Comments JOIN Users ON Comments.userid=Users.userid
+WHERE titleid=%s
+ORDER BY publishtime
+'''
+cursor.execute(query11, (titleid,))
 show_result(cursor)
 
