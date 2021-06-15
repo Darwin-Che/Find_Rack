@@ -40,6 +40,6 @@ python pyflask/init.py
 Will create the database called 'MovieList' and load in some sample data.
 
 ### Start the application
-Run: `python app.py` inside the `pyflask` directory.
+Run: `flask run --host=0.0.0.0` inside the `pyflask` directory.
 
 You can now connect to the application here: http://127.0.0.1:5000.
