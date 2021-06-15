@@ -24,6 +24,7 @@ input_title = format_input(input_title)
 query1 = '''
 SELECT title,releaseyear,runtimemin FROM Movies
 WHERE title LIKE %s
+ORDER BY titleid
 '''
 cursor.execute(query1, (input_title,))
 show_result(cursor)
@@ -35,6 +36,7 @@ input_year = '2016'
 query2 = '''
 SELECT title,releaseyear,runtimemin FROM Movies
 WHERE releaseyear=%s
+ORDER BY titleid
 '''
 cursor.execute(query2, (input_year,))
 show_result(cursor)
@@ -50,6 +52,7 @@ SELECT title,releaseyear,runtimemin FROM Movies
 WHERE titleid IN
 (SELECT titleid FROM Casts c JOIN Cast_Movie cm ON c.castid=cm.castid
 WHERE castname LIKE %s AND (role="actor" OR role="actress"))
+ORDER BY titleid
 '''
 cursor.execute(query3, (input_actor,))
 show_result(cursor)
@@ -64,6 +67,7 @@ SELECT title,releaseyear,runtimemin FROM Movies
 WHERE titleid IN
 (SELECT titleid FROM Casts c JOIN Cast_Movie cm ON c.castid=cm.castid
 WHERE castname LIKE %s AND role="director")
+ORDER BY titleid
 '''
 cursor.execute(query4, (input_director,))
 show_result(cursor)
@@ -79,6 +83,7 @@ SELECT title,releaseyear,runtimemin FROM Movies
 WHERE titleid IN
 (SELECT titleid FROM Genre_Movie
 WHERE genre LIKE %s)
+ORDER BY titleid
 '''
 cursor.execute(query5, (input_genre,))
 show_result(cursor)
@@ -88,7 +93,7 @@ show_result(cursor)
 print('Create new list')
 
 print('Original lists')
-cursor.execute('SELECT * FROM Lists')
+cursor.execute('SELECT * FROM Lists ORDER BY listid')
 show_result(cursor)
 
 userid = 'e74e269da2494fe594f55bad7c21b651'
@@ -106,7 +111,7 @@ VALUES(%s, %s, %s)
 cursor.execute(query6, new_list)
 
 print('New lists')
-cursor.execute('SELECT * FROM Lists')
+cursor.execute('SELECT * FROM Lists ORDER BY listid')
 show_result(cursor)
 
 print('Add a new movie to a list')
@@ -116,7 +121,7 @@ titleid = 'mn07'
 new_entry = (listid, titleid)
 
 print('Original list')
-cursor.execute('SELECT * FROM List_Movie WHERE listid=%s', (listid,))
+cursor.execute('SELECT * FROM List_Movie WHERE listid=%s ORDER BY listid', (listid,))
 show_result(cursor)
 
 query7='''
@@ -128,7 +133,7 @@ VALUES(%s, %s)
 cursor.execute(query7, new_entry)
 
 print('Updated list')
-cursor.execute('SELECT * FROM List_Movie WHERE listid=%s', (listid,))
+cursor.execute('SELECT * FROM List_Movie WHERE listid=%s ORDER BY listid', (listid,))
 show_result(cursor)
 
 print('New Subscription')
@@ -138,7 +143,7 @@ subscribeto = 'f5766a1b2bbf47548e6df15c165b2589'
 new_subscription = (subscriber, subscribeto)
 
 print('Original Subscriptions')
-cursor.execute('SELECT * FROM Subscription')
+cursor.execute('SELECT * FROM Subscription ORDER BY subscriber')
 show_result(cursor)
 
 query8='''
@@ -150,14 +155,14 @@ VALUES(%s, %s)
 cursor.execute(query8, new_subscription)
 
 print('Updated Subscriptions')
-cursor.execute('SELECT * FROM Subscription')
+cursor.execute('SELECT * FROM Subscription ORDER BY subscriber')
 show_result(cursor)
 
 
 print('Create new comment')
 
 print('Original comments')
-cursor.execute('SELECT * FROM Comments')
+cursor.execute('SELECT * FROM Comments ORDER BY commentid')
 show_result(cursor)
 
 commentid = uuid.uuid4().hex
@@ -177,7 +182,7 @@ VALUES(%s, %s, %s, %s, %s)
 cursor.execute(query9, new_comment)
 
 print('Updated comments')
-cursor.execute('SELECT * FROM Comments')
+cursor.execute('SELECT * FROM Comments ORDER BY commentid')
 show_result(cursor)
 
 print('Randomly select a movie of a given genre')
