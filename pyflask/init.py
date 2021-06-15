@@ -46,7 +46,7 @@ def loaddata():
     for a in cursor.execute(Path(path_table_sql, 'create_table.sql').read_text().replace("path", path_data), multi=True):
         pass
     
-    only_imdb = True  # are we only loading the four tables provided by ivan, or we are loading all 9 tables
+    only_imdb = False  # are we only loading the four tables provided by ivan, or we are loading all 9 tables
     if only_imdb:
         for a in cursor.execute(Path(path_table_sql, 'populate_table_imdb.sql').read_text().replace("path", path_data), multi=True):
             pass

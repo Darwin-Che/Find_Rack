@@ -1,0 +1,60 @@
+Success creating database: MovieList, now inserting data...
+Repairing foreign keys...
+Searching by title
+('Back to the Future', 1985, 116)
+('Back to the Future Part II', 1989, 108)
+('Back to the Future Part III', 1990, 118)
+Searching by year
+('Zootopia', 2016, 108)
+('Elle', 2016, 130)
+Searching by actor/actress
+('Back to the Future', 1985, 116)
+('Back to the Future Part II', 1989, 108)
+('Back to the Future Part III', 1990, 118)
+Searching by director
+('Titanic', 1997, 194)
+Searching by genre
+("La leggenda del pianista sull'oceano", 1998, 169)
+('Léon', 1994, 110)
+('Titanic', 1997, 194)
+('Elle', 2016, 130)
+('Gone Girl', 2014, 149)
+Create new list
+Original lists
+('48420e59a5a4435a83e4b4f3a857d89b', '607cc790aa6046bcb6bd1ef91ba21b9d', "Andy's l01")
+('5bbca155cec84d9ea0f7cb875d69297f', 'e74e269da2494fe594f55bad7c21b651', "Zhaocheng's l11")
+('f5766a1b2bbf47548e6df15c165b2589', '32b97521386243cf830ec3f1658fd228', "Rajat's l04")
+New lists
+('419379401ebf4383bf5ed1f2043ec1b1', 'e74e269da2494fe594f55bad7c21b651', "Darwin's favourite")
+('48420e59a5a4435a83e4b4f3a857d89b', '607cc790aa6046bcb6bd1ef91ba21b9d', "Andy's l01")
+('5bbca155cec84d9ea0f7cb875d69297f', 'e74e269da2494fe594f55bad7c21b651', "Zhaocheng's l11")
+('f5766a1b2bbf47548e6df15c165b2589', '32b97521386243cf830ec3f1658fd228', "Rajat's l04")
+Add a new movie to a list
+Original list
+Updated list
+('419379401ebf4383bf5ed1f2043ec1b1', 'mn07')
+New Subscription
+Original Subscriptions
+('2fb4ac1a6f2e4fb9b57356c5f2203258', 'f5766a1b2bbf47548e6df15c165b2589')
+('607cc790aa6046bcb6bd1ef91ba21b9d', '5bbca155cec84d9ea0f7cb875d69297f')
+('ccc93aa55f5447f8a32d0bab74c52ad3', '5bbca155cec84d9ea0f7cb875d69297f')
+('ccc93aa55f5447f8a32d0bab74c52ad3', 'f5766a1b2bbf47548e6df15c165b2589')
+('e74e269da2494fe594f55bad7c21b651', 'f5766a1b2bbf47548e6df15c165b2589')
+Updated Subscriptions
+('2fb4ac1a6f2e4fb9b57356c5f2203258', 'f5766a1b2bbf47548e6df15c165b2589')
+('607cc790aa6046bcb6bd1ef91ba21b9d', '5bbca155cec84d9ea0f7cb875d69297f')
+('607cc790aa6046bcb6bd1ef91ba21b9d', 'f5766a1b2bbf47548e6df15c165b2589')
+('ccc93aa55f5447f8a32d0bab74c52ad3', '5bbca155cec84d9ea0f7cb875d69297f')
+('ccc93aa55f5447f8a32d0bab74c52ad3', 'f5766a1b2bbf47548e6df15c165b2589')
+('e74e269da2494fe594f55bad7c21b651', 'f5766a1b2bbf47548e6df15c165b2589')
+Create new comment
+Original comments
+('36279d1765de4bd5867f6b921a0daed5', 'mn04', '607cc790aa6046bcb6bd1ef91ba21b9d', '"Back to the Future is a good Movie!" - by Andy', datetime.datetime(2000, 1, 1, 0, 0, 1))
+('a69d486d2dc143edabf87cc78d30360c', 'mn08', '2fb4ac1a6f2e4fb9b57356c5f2203258', 'Elle is; exciting! - by Yao Wang', datetime.datetime(2017, 12, 31, 17, 4, 59))
+Updated comments
+('36279d1765de4bd5867f6b921a0daed5', 'mn04', '607cc790aa6046bcb6bd1ef91ba21b9d', '"Back to the Future is a good Movie!" - by Andy', datetime.datetime(2000, 1, 1, 0, 0, 1))
+('a69d486d2dc143edabf87cc78d30360c', 'mn08', '2fb4ac1a6f2e4fb9b57356c5f2203258', 'Elle is; exciting! - by Yao Wang', datetime.datetime(2017, 12, 31, 17, 4, 59))
+('adf5bd828c1c4494ab7eb1d1fec720e6', 'mn08', 'e74e269da2494fe594f55bad7c21b651', "J'aime Elle !", datetime.datetime(2021, 6, 14, 20, 18, 39))
+Randomly select a movie of a given genre
+The randomly fenerated movie is
+('Elle', 2016, 130)
