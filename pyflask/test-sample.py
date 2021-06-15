@@ -200,6 +200,6 @@ LIMIT 1
 '''
 
 cursor.execute(query10, (input_genre,))
-print('The randomly fenerated movie is')
+print('The randomly generated movie is')
 show_result(cursor)
 
