@@ -29,7 +29,8 @@ CREATE TABLE Lists (
     listid      VARCHAR(32) NOT NULL PRIMARY KEY,
     userid      VARCHAR(32) NOT NULL,
     listname    VARCHAR(20) NOT NULL,
-    FOREIGN KEY (userid) REFERENCES Users(userid)
+    FOREIGN KEY (userid) REFERENCES Users(userid),
+    UNIQUE (userid, listname)
 );
 
 CREATE TABLE Comments (

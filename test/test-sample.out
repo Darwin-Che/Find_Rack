@@ -27,12 +27,12 @@ Original lists
 New lists
 ('48420e59a5a4435a83e4b4f3a857d89b', '607cc790aa6046bcb6bd1ef91ba21b9d', "Andy's l01")
 ('5bbca155cec84d9ea0f7cb875d69297f', 'e74e269da2494fe594f55bad7c21b651', "Zhaocheng's l11")
-('e87e42e3e61044b39f506c151312fb11', 'e74e269da2494fe594f55bad7c21b651', "Darwin's favourite")
+('734ee307220c409dacff17a9373f78c4', 'e74e269da2494fe594f55bad7c21b651', "Darwin's favourite")
 ('f5766a1b2bbf47548e6df15c165b2589', '32b97521386243cf830ec3f1658fd228', "Rajat's l04")
 Add a new movie to a list
 Original list
 Updated list
-('e87e42e3e61044b39f506c151312fb11', 'mn07')
+('734ee307220c409dacff17a9373f78c4', 'mn07')
 New Subscription
 Original Subscriptions
 ('2fb4ac1a6f2e4fb9b57356c5f2203258', 'f5766a1b2bbf47548e6df15c165b2589')
@@ -49,12 +49,15 @@ Updated Subscriptions
 ('e74e269da2494fe594f55bad7c21b651', 'f5766a1b2bbf47548e6df15c165b2589')
 Create new comment
 Original comments
-('36279d1765de4bd5867f6b921a0daed5', 'mn04', '607cc790aa6046bcb6bd1ef91ba21b9d', '"Back to the Future is a good Movie!" - by Andy', datetime.datetime(2000, 1, 1, 0, 0, 1))
-('a69d486d2dc143edabf87cc78d30360c', 'mn08', '2fb4ac1a6f2e4fb9b57356c5f2203258', 'Elle is; exciting! - by Yao Wang', datetime.datetime(2017, 12, 31, 17, 4, 59))
+('36279d1765de4bd5867f6b921a0daed5', 'mn04', '607cc790aa6046bcb6bd1ef91ba21b9d', '"Back to the Future is a good Movie! - By AB"', datetime.datetime(2000, 1, 1, 0, 0, 1))
+('a69d486d2dc143edabf87cc78d30360c', 'mn08', '2fb4ac1a6f2e4fb9b57356c5f2203258', 'Elle is; exciting!', datetime.datetime(2017, 12, 31, 17, 4, 59))
 Updated comments
-('36279d1765de4bd5867f6b921a0daed5', 'mn04', '607cc790aa6046bcb6bd1ef91ba21b9d', '"Back to the Future is a good Movie!" - by Andy', datetime.datetime(2000, 1, 1, 0, 0, 1))
-('a69d486d2dc143edabf87cc78d30360c', 'mn08', '2fb4ac1a6f2e4fb9b57356c5f2203258', 'Elle is; exciting! - by Yao Wang', datetime.datetime(2017, 12, 31, 17, 4, 59))
-('dd933fc67ac1438db0134ea35d47d7e3', 'mn08', 'e74e269da2494fe594f55bad7c21b651', "J'aime Elle !", datetime.datetime(2021, 6, 14, 20, 25, 29))
+('36279d1765de4bd5867f6b921a0daed5', 'mn04', '607cc790aa6046bcb6bd1ef91ba21b9d', '"Back to the Future is a good Movie! - By AB"', datetime.datetime(2000, 1, 1, 0, 0, 1))
+('a69d486d2dc143edabf87cc78d30360c', 'mn08', '2fb4ac1a6f2e4fb9b57356c5f2203258', 'Elle is; exciting!', datetime.datetime(2017, 12, 31, 17, 4, 59))
+('e5ce901e25de43009202e5592915f342', 'mn08', 'e74e269da2494fe594f55bad7c21b651', "J'aime Elle !", datetime.datetime(2021, 6, 14, 22, 23, 7))
 Randomly select a movie of a given genre
 The randomly generated movie is
-('Elle', 2016, 130)
+('Gone Girl', 2014, 149)
+Viewing comments of a movie
+('Elle is; exciting!', 'Yao Wang', datetime.datetime(2017, 12, 31, 17, 4, 59))
+("J'aime Elle !", 'Zhaocheng', datetime.datetime(2021, 6, 14, 22, 23, 7))
