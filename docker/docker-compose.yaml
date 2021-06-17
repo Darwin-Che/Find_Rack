@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
     app:
@@ -16,7 +16,8 @@ services:
         ports:
             - "5000:5000"
         environment:
-            DATABASE_HOST: cs348_movielist_mysql
+            - USE_REAL_DATA
+            - DATABASE_HOST=cs348_movielist_mysql
     mysql:
         image: mysql:8.0.25
         container_name: cs348_movielist_mysql
@@ -31,6 +32,15 @@ services:
         volumes:
             - ../:/app
             - database:/var/lib/mysql
+            - app_context:/context
+    from-snapshot:
+        image: busybox:stable
+        restart: "no"
+        command: sh -c "cd / && wget 'https://public.s3.svc.vepta.org/school/database.tar.gz' && wget 'https://public.s3.svc.vepta.org/school/context.tar.gz' && rm -rf /database/* /context/* && tar -xzvf database.tar.gz && mv /vol/* /database/ && tar -xzvf context.tar.gz && mv /vol/* /context/"
+        profiles:
+            - ignore
+        volumes:
+            - database:/database
             - app_context:/context
 volumes:
     app_context:
