@@ -51,4 +51,6 @@ You can now connect to the application here: http://127.0.0.1:5000.
 ## Loading in real data
 Tools for transforming and loading the IMDB database can be found in the `transformation_scripts` folder.
 
-Additionally, if you use docker you can run `USE_REAL_DATA=true docker-compose up` instead of the normal `docker-compose up` command to automatically fetch, transform and load the IMDB dataset. Note that this is a very slow process however (several hours).
+Additionally, if you use docker you can run `USE_REAL_DATA=true docker-compose up` instead of the normal `docker-compose up` command to automatically fetch, transform and load the IMDB dataset.
+
+**Note that the above process is very slow (takes several hours).** You can instead load a pre-transformed dataset if you don't want to wait by running `docker-compose up from-snapshot` and then running the normal `docker-compose up`.
