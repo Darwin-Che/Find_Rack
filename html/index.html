@@ -33,5 +33,25 @@ pre {
         <button onclick="login(this)">Go!</button>
         <pre class="out"></pre>
     </div>
+    <div>
+        <h2>Create List</h2>
+        <input id="create_list_name" type="text" placeholder="List name"/>
+        <button onclick="create_list(this)">Go!</button>
+        <pre class="out"></pre>
+    </div>
+    <div>
+        <h2>View Your Lists</h2>
+        <button onclick="get_personal_lists(this)">Go!</button>
+        <pre class="out"></pre>
+    </div>
+    <div>
+        <h2>Add a movie to a list</h2>
+        <label>Choose a list:</label>
+        <select id='list_selector' name='lists'></select>
+        <label>Choose a movie (from search results):</label>
+        <select id='movie_selector' name='movies'></select>
+        <button onclick="add_to_list(this)">Go!</button>
+        <pre class="out"></pre>
+    </div>
     <script src="/script.js"></script>
 </body>
