@@ -98,16 +98,24 @@ def handle_app_error(e):
 @app.route('/api/movies')
 def query_movies():
     title = request.args.get('title')
+    cast = request.args.get('cast')
+    castid = request.args.get('castid')
     builder = []
     params = []
     if title is not None:
         builder.append('title LIKE %s')
         params.append(sql_like(title))
+    if cast is not None:
+        builder.append('titleid IN (SELECT titleid FROM Casts c JOIN Cast_Movie cm ON c.castid = cm.castid WHERE c.castname LIKE %s)')
+        params.append(sql_like(cast))
+    if castid is not None:
+        builder.append('titleid IN (SELECT titleid FROM Cast_Movie WHERE castid = %s)')
+        params.append(castid)
     with cnx() as conn:
         with conn.cursor() as cursor:
             query = "SELECT * FROM Movies"
             if builder:
-                query = query + ' WHERE ' + 'AND'.join(builder)
+                query = query + ' WHERE ' + ' AND '.join(builder)
             cursor.execute(query, params)
             return json.dumps(cursor.fetchall())
 

@@ -31,11 +31,16 @@ function setResult(element, result) {
 
 async function query_movies(element) {
     const titleInput = document.getElementById("query_movies_title");
+    const castInput = document.getElementById("query_movies_cast");
     const params = {};
     if(titleInput.value.length > 0) {
         params.title = titleInput.value;
     }
+    if(castInput.value.length > 0) {
+        params.cast = castInput.value;
+    }
     let outText;
+    setResult(element, "Loading...");
     try {
         const result = await get('/api/movies', params);
         outText = "Movies:\n" + result.map(it => it[1]).join('\n');
