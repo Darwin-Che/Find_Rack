@@ -158,12 +158,9 @@ def login():
 
 @app.route('/api/lists', methods=['GET'])
 def get_lists():
-    try:
-        userid = jwt.decode(bytes(request.args.get('token'), 'utf-8'), jwt_secret, algorithms="HS256")['userid']
-    except:
-        userid = None
-    if userid is None:
-        raise AppError('Need to be logged in!')
+    userid = request.args.get('userid')
+    if not userid:
+        raise AppError('No user id supplied!')
     response = {}
     with cnx() as conn:
         with conn.cursor() as cursor:

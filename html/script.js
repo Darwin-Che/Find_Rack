@@ -84,8 +84,9 @@ async function login(element) {
             username: usernameInput.value,
             password: passwordInput.value
         });
-        outText = "Logged in, JWT token is: " + result. token;
-        sessionStorage.setItem("JWT_token", result.token);
+        const token = result.token;
+        outText = `Logged in, JWT token is: ${token}, user id: ${jwt_decode(token).userid}`;
+        sessionStorage.setItem("JWT_token", token);
     } catch(e) {
         outText = "Error: " + e.message;
     }
@@ -109,6 +110,7 @@ async function create_list(element) {
 
 function populate_list_dropdown(result) {
     selector = document.getElementById("list_selector")
+    selector.replaceChildren(); // Clear old entries
     Object.keys(result).forEach((k) => {
         const option = document.createElement("option");
         option.text = result[k]['name']
@@ -119,6 +121,7 @@ function populate_list_dropdown(result) {
 
 function populate_movie_dropdown(result) {
     selector = document.getElementById("movie_selector")
+    selector.replaceChildren(); // Clear old entries
     result.forEach((r) => {
         const option = document.createElement("option");
         option.text = r[1]
@@ -129,16 +132,46 @@ function populate_movie_dropdown(result) {
 
 async function get_personal_lists(element) {
     const token = sessionStorage.getItem("JWT_token");
+    if(token != null) {
+        try {
+            const userid = jwt_decode(token).userid;
+            const lists = await get_lists_internal(element, userid);
+            populate_list_dropdown(lists)
+            outText = format_lists(lists);
+        } catch(e) {
+            outText = "Error: " + e.message;
+        }
+    } else {
+        outText = "You must be logged in!";
+    }
+    setResult(element, outText);
+}
+
+async function get_lists(element) {
+    const userid = document.getElementById("get_lists_userid");
     try {
-        const result = await get('/api/lists', {
-            token: token
-        });
-        populate_list_dropdown(result)
-        outText = JSON.stringify(result);
-    }   catch(e) {
+        const lists = await get_lists_internal(element, userid.value);
+        outText = format_lists(lists);
+    } catch(e) {
         outText = "Error: " + e.message;
     }
     setResult(element, outText);
+}
+
+async function get_lists_internal(element, userid) {
+    return await get('/api/lists', { userid });
+}
+
+function format_lists(lists) {
+    let out = `${Object.values(lists).length} list(s) were found:\n\n`;
+    for(const list of Object.values(lists)) {
+        out += `${list.name} (contains ${list.titles.length} movies):\n`;
+        for(const title of list.titles) {
+            out += `- ${title}\n`;
+        }
+        out += "\n";
+    }
+    return out;
 }
 
 async function add_to_list(element) {
