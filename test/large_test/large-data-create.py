@@ -1,9 +1,14 @@
 import random
+import os
 import datetime
+import mysql.connector
+from pathlib import Path
 
 #### 
 print('load in the entries of Movies.scsv')
-f = open("realdata/movies.scsv")
+print('enter path to movies.scsv (e.g. input ../../realdata/movies.scsv)')
+movies_path = input()
+f = open(movies_path)
 movies = f.readlines()
 f.close()
 
@@ -15,9 +20,9 @@ def randmovieid():
 print('How many users you want? (user id starting from 0) ')
 user_n = int(input())
 
-print('creating Users.scsv {}'.format(user_n))
+print('creating users.scsv {}'.format(user_n))
 
-f = open("Users.scsv", "w")
+f = open("users.scsv", "w")
 f.write('userid;username;password\n');
 
 for i in range(user_n):
@@ -30,9 +35,9 @@ f.close()
 print('How many lists you want? (list id starting from 0)')
 list_n = int(input())
 
-print('creating Lists.scsv {}'.format(list_n))
+print('creating lists.scsv {}'.format(list_n))
 
-f = open("Lists.scsv", "w")
+f = open("lists.scsv", "w")
 f.write('listid;userid;listname\n')
 
 for i in range(list_n):
@@ -52,7 +57,7 @@ def randomtimes(start = "1900-01-01 00:00:00", end = "2020-01-01 00:00:00"):
 print('How many comments you want? (comment id starting from 0)')
 com_n = int(input())
 
-print('creating comments.scsv {}'.format(list_n))
+print('creating comments.scsv {}'.format(com_n))
 
 f = open("comments.scsv", "w")
 f.write('commentid;movieid;userid;text;publishtime\n')
@@ -106,8 +111,39 @@ else:
 
 f.close()
 
+#### do you want to write these data to the database?
 
+print('do you want to write these data to the database? 0 for NO, 1 for Yes')
+writedatabase = int(input())
 
+if writedatabase != 0:
+	sql_host = os.getenv('DATABASE_HOST', default='localhost')
+	print('mysql host : ' + str(sql_host)) 
+	sql_port = int(os.getenv('DATABASE_PORT', default='3306'))
+	print('mysql port : ' + str(sql_port))
+	DBName = 'MovieList'
+	print('DBName : ' + str(DBName))
+	
+	cnx = mysql.connector.connect(host=sql_host, 
+		port=sql_port, 
+		user='348proj', 
+		passwd='dev000000',
+		database=DBName)
+
+	sql_path = str(Path().absolute())
+	data_path = sql_path
+	cursor = cnx.cursor()
+	print(sql_path)
+	for a in cursor.execute(Path(sql_path, 'drop_large_test.sql').read_text().replace('path', data_path), multi=True):
+		pass
+	for a in cursor.execute(Path(sql_path, 'create_large_test.sql').read_text().replace('path', data_path), multi=True):
+		pass
+	for a in cursor.execute(Path(sql_path, 'populate_large_test.sql').read_text().replace('path', data_path), multi=True):
+		pass
+	
+
+	cnx.commit()
+	
 
 
 

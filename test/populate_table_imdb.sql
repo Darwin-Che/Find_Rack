@@ -57,7 +57,7 @@ IGNORE 1 LINES;
 -- LINES TERMINATED BY '\n'
 -- IGNORE 1 LINES;
 
-LOAD DATA INFILE "path/genre_movie.scsv"
+LOAD DATA INFILE "path/movie_genre.scsv"
 IGNORE
 INTO TABLE Genre_Movie
 CHARACTER SET utf8mb4
