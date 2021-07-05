@@ -1,0 +1,160 @@
+
+all movies %Back to the Future%
+title	releaseyear	runtimemin
+Back to the Future	1985	116
+Back to the Future Part II	1989	108
+Back to the Future Part III	1990	118
+Project 88: Back to the Future Too	2020	105
+BTTF Project 85: The Back to the Future Fan Remake	2020	120
+Expo 67: Back to the Future	2004	48
+
+---------------------------------
+
+all movies at year 2016
+title	releaseyear	runtimemin
+Los tallos amargos	2016	90
+Les bâtisseurs	2016	48
+Wazir	2016	103
+Aman Ke Farishtey	2016	137
+American Pastoral	2016	108
+The History of Love	2016	134
+Tak erkir, tsurt dzmer	2016	104
+Hail, Caesar!	2016	106
+Silence	2016	161
+Nina	2016	90
+
+---------------------------------
+
+all movies by %Jim Carrey%
+title	releaseyear	runtimemin
+Once Bitten	1985	94
+Earth Girls Are Easy	1988	100
+Ace Ventura: Pet Detective	1994	86
+Dumb and Dumber	1994	107
+The Mask	1994	101
+Ace Ventura: When Nature Calls	1995	90
+Batman Forever	1995	121
+The Cable Guy	1996	96
+Liar Liar	1997	86
+The Truman Show	1998	103
+
+---------------------------------
+
+all lists by user5 or user0
+listid	userid	listname
+l969	u5	list969
+
+---------------------------------
+
+add a list (lNEW, u0, u0 new list)
+
+---------------------------------
+
+all lists by user5 or user0
+listid	userid	listname
+l969	u5	list969
+lNEW	u0	u0's new list
+
+---------------------------------
+
+delete movie tt0000502 from list lNEW
+
+---------------------------------
+
+add movie tt0000502 from list lNEW
+
+---------------------------------
+
+all movies in list lNEW
+listid	titleid
+lNEW	tt0000502
+
+---------------------------------
+
+all comments by user5 or user0
+comment	publishtime
+comment from user 5 to movie tt11203328	2019-02-01 06:26:54
+comment from user 0 to movie tt0093639	2018-10-27 02:12:59
+comment from user 5 to movie tt6371638	2018-06-02 13:47:46
+comment from user 5 to movie tt0101587	2017-01-16 14:55:09
+comment from user 5 to movie tt0025908	2014-10-11 20:30:51
+comment from user 0 to movie tt0068379	1996-01-21 23:26:12
+comment from user 0 to movie tt2323493	1994-06-05 11:12:06
+comment from user 0 to movie tt9642696	1989-06-26 03:07:48
+comment from user 0 to movie tt7581088	1986-10-02 04:20:27
+comment from user 0 to movie tt5918132	1983-11-11 04:34:23
+
+---------------------------------
+
+u5 has a new comment on tt0000502
+
+---------------------------------
+
+all comment on movie tt0000502
+comment	publishtime
+u5 has a new comment on tt0000502	2021-07-05 11:00:00
+
+---------------------------------
+
+all comment on movie id < tt0001000
+comment	publishtime
+u5 has a new comment on tt0000502	2021-07-05 11:00:00
+
+---------------------------------
+
+all comment by user5 or user0
+comment	publishtime
+u5 has a new comment on tt0000502	2021-07-05 11:00:00
+comment from user 5 to movie tt11203328	2019-02-01 06:26:54
+comment from user 0 to movie tt0093639	2018-10-27 02:12:59
+comment from user 5 to movie tt6371638	2018-06-02 13:47:46
+comment from user 5 to movie tt0101587	2017-01-16 14:55:09
+comment from user 5 to movie tt0025908	2014-10-11 20:30:51
+comment from user 0 to movie tt0068379	1996-01-21 23:26:12
+comment from user 0 to movie tt2323493	1994-06-05 11:12:06
+comment from user 0 to movie tt9642696	1989-06-26 03:07:48
+comment from user 0 to movie tt7581088	1986-10-02 04:20:27
+
+---------------------------------
+
+all lists user0 subscribed
+subscriber	subscribeto
+u0	l107
+u0	l167
+u0	l35
+u0	l363
+u0	l373
+u0	l384
+u0	l392
+u0	l471
+u0	l477
+u0	l570
+
+---------------------------------
+
+all users subscribed to list0
+subscriber	subscribeto
+u101	l0
+u128	l0
+u140	l0
+u194	l0
+u259	l0
+u305	l0
+u31	l0
+u338	l0
+u394	l0
+u403	l0
+
+---------------------------------
+
+all users subscribed to lNEW
+
+---------------------------------
+
+user0 subscribe to lNEW
+
+---------------------------------
+
+all users subscribed to lNEW
+subscriber	subscribeto
+u0	lNEW

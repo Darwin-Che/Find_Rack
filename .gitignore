@@ -1,3 +1,4 @@
+test/large_test/tmp/
 */.DS_Store
 test/large_test/*.scsv
 test/large_test/realdata/
