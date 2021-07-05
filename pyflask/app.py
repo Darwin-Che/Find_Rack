@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 import datetime
 import click
@@ -154,3 +155,61 @@ def login():
         return json.dumps({"token":jwt.encode({"userid": row[0]}, jwt_secret, algorithm="HS256")})
     else:
         raise AppError('Bad password!')
+
+@app.route('/api/lists', methods=['GET'])
+def get_lists():
+    try:
+        userid = jwt.decode(bytes(request.args.get('token'), 'utf-8'), jwt_secret, algorithms="HS256")['userid']
+    except:
+        userid = None
+    if userid is None:
+        raise AppError('Need to be logged in!')
+    response = {}
+    with cnx() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT listname, title, listid FROM (SELECT Lists.listid, listname, titleid FROM Lists LEFT JOIN List_Movie ON Lists.listid=List_Movie.listid WHERE Lists.userid=%s) AS E LEFT JOIN Movies on E.titleid=Movies.titleid;", (userid,))
+            for row in cursor.fetchall():
+                if (row[2] in response):
+                    response[row[2]]['titles'].append(row[1])
+                else:
+                    response[row[2]] = {'name': row[0], 'titles': [row[1]] if row[1] else []} 
+            return json.dumps(response)
+            
+@app.route('/api/lists', methods=['POST'])
+def create_list():
+    try:
+        userid = jwt.decode(bytes(request.json.get('token'), 'utf-8'), jwt_secret, algorithms="HS256")['userid']
+    except:
+        userid = None
+    listname = request.json.get('listname')
+    if userid is None:
+        raise AppError('Need to be logged in!')
+    if listname is None or len(listname) <= 0:
+        raise AppError('List name cannot be None!')
+    listid = ''.join(random.choices(string.ascii_letters + string.digits, k=11))
+    with cnx() as conn:
+        try:
+            with conn.cursor() as cursor:
+                cursor.execute("INSERT INTO Lists VALUES (%s, %s, %s)", (listid, userid, listname))
+            conn.commit()
+        except mysql.connector.IntegrityError as err:
+            raise AppError('A list with this name already exists!')
+    return json.dumps({'listid': listid})
+
+@app.route('/api/list-add', methods=['POST'])
+def add_to_list():
+    listid = request.json.get('listid')
+    titleid = request.json.get('titleid')
+    if listid is None or len(listid) <= 0:
+        raise AppError('listid cannot be none!')
+    if titleid is None or len(titleid) <= 0:
+        raise AppError('titleid cannot be none!')
+    with cnx() as conn:
+        try:
+            with conn.cursor() as cursor:
+                cursor.execute("INSERT INTO List_Movie VALUES (%s, %s)", (listid, titleid))
+            conn.commit()
+        except mysql.connector.IntegrityError as err:
+            raise AppError('A list with this name already exists!')
+    return json.dumps({'listid': listid})
+    

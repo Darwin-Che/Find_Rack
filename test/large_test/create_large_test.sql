@@ -1,10 +1,3 @@
-CREATE TABLE Movies (
-    titleid     VARCHAR(11)  NOT NULL PRIMARY KEY,
-    title       VARCHAR(400) NOT NULL,
-    releaseyear    SMALLINT UNSIGNED,
-    runtimemin  MEDIUMINT UNSIGNED,
-    summary     TEXT
-);
 
 CREATE TABLE Users (
     userid     VARCHAR(32)  NOT NULL PRIMARY KEY,
@@ -12,19 +5,6 @@ CREATE TABLE Users (
     password   BINARY(64)   NOT NULL /* 32 bytes SHA256, 32 bytes salt*/
 );
 
-CREATE TABLE Casts (
-    castid      VARCHAR(11)  NOT NULL PRIMARY KEY,
-    castname    VARCHAR(200) NOT NULL
-);
-
-CREATE TABLE Cast_Movie (
-    castid      VARCHAR(11)  NOT NULL,
-    titleid     VARCHAR(11)  NOT NULL,
-    role        VARCHAR(20)  NOT NULL,
-    PRIMARY KEY (castid, titleid, role),
-    FOREIGN KEY (castid) REFERENCES Casts(castid),
-    FOREIGN KEY (titleid) REFERENCES Movies(titleid)
-);
 
 CREATE TABLE Lists (
     listid      VARCHAR(32) NOT NULL PRIMARY KEY,
@@ -52,12 +32,6 @@ CREATE TABLE List_Movie (
     FOREIGN KEY (listid) REFERENCES Lists(listid)
 );
 
-CREATE TABLE Genre_Movie (
-    titleid      VARCHAR(11) NOT NULL,
-    genre        VARCHAR(20) NOT NULL,
-    PRIMARY KEY (titleid, genre),
-    FOREIGN KEY (titleid) REFERENCES Movies(titleid)
-);
 
 CREATE TABLE Subscription (
     subscriber  VARCHAR(32) NOT NULL, -- this is userid

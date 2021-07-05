@@ -1,3 +1,9 @@
+*/.DS_Store
+test/large_test/*.scsv
+test/large_test/realdata/
+transformation_scripts/
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
