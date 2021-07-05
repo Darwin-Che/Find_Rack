@@ -2,7 +2,8 @@ CREATE TABLE Movies (
     titleid     VARCHAR(11)  NOT NULL PRIMARY KEY,
     title       VARCHAR(400) NOT NULL,
     releaseyear    SMALLINT UNSIGNED,
-    runtimemin  MEDIUMINT UNSIGNED
+    runtimemin  MEDIUMINT UNSIGNED,
+    summary     TEXT
 );
 
 CREATE TABLE Users (
