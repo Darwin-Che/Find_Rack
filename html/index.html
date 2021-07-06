@@ -5,6 +5,12 @@ pre {
     overflow-y: auto;
     border: 1px solid gray;
 }
+td, th {
+    border: 1px solid gray;
+}
+table {
+    border-collapse: collapse;
+}
 </style>
 </head>
 <body>
@@ -12,12 +18,22 @@ pre {
         <h2>Search for movie</h2>
         <label>Title:</label>
         <input id="query_movies_title" type="text" placeholder="Title"/>
-
         <br/>
 
         <label>Cast member:</label>
         <input id="query_movies_cast" type="text" placeholder="Cast member"/>
+        <br/>
 
+        <label>Release year:</label>
+        <input id="query_movies_release_year" type="text" placeholder="Release year"/>
+        <br/>
+
+        <label>Minimum runtime (in mins):</label>
+        <input id="query_movies_min_runtime" type="text" placeholder="Minimum runtime"/>
+        <br/>
+
+        <label>Maximum runtime (in mins):</label>
+        <input id="query_movies_max_runtime" type="text" placeholder="Maximum runtime"/>
         <br/>
 
         <button onclick="query_movies(this)">Go!</button>

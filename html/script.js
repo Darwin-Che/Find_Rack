@@ -26,12 +26,22 @@ async function post(endpoint, body) {
 }
 
 function setResult(element, result) {
-    element.parentElement.querySelector(".out").textContent = result;
+    const newElement = document.createElement('pre');
+    newElement.textContent = result;
+    setResultElement(element, newElement);
+}
+
+function setResultElement(element, newElement) {
+    newElement.classList.add('out');
+    element.parentElement.querySelector(".out").replaceWith(newElement);
 }
 
 async function query_movies(element) {
     const titleInput = document.getElementById("query_movies_title");
     const castInput = document.getElementById("query_movies_cast");
+    const releaseYearInput = document.getElementById("query_movies_release_year");
+    const minRuntimeInput = document.getElementById("query_movies_min_runtime");
+    const maxRuntimeInput = document.getElementById("query_movies_max_runtime");
     const params = {};
     if(titleInput.value.length > 0) {
         params.title = titleInput.value;
@@ -39,16 +49,48 @@ async function query_movies(element) {
     if(castInput.value.length > 0) {
         params.cast = castInput.value;
     }
-    let outText;
+    if(releaseYearInput.value.length > 0) {
+        params.releaseyear = releaseYearInput.value;
+    }
+    if(minRuntimeInput.value.length > 0) {
+        params.minruntime = minRuntimeInput.value;
+    }
+    if(maxRuntimeInput.value.length > 0) {
+        params.maxruntime = maxRuntimeInput.value;
+    }
     setResult(element, "Loading...");
     try {
-        const result = await get('/api/movies', params);
-        outText = "Movies:\n" + result.map(it => it[1]).join('\n');
-        populate_movie_dropdown(result);
+        if(Object.keys(params).length <= 0)
+            throw new Error('Please use at least one filter.');
+        const results = await get('/api/movies', params);
+        const newElement = document.createElement('table');
+        newElement.classList.add('data-table');
+        newElement.innerHTML = '<tr><th>Title</th><th>Release year</th><th>Runtime (mins)</th><th>Summary</th></tr>';
+        if(results.length <= 0) {
+            setResult(element, "No results found!");
+        } else {
+            for(const result of results) {
+                const row = document.createElement('tr');
+                const titleCell = document.createElement('td');
+                titleCell.textContent = result[1];
+                row.appendChild(titleCell);
+                const releaseYearCell = document.createElement('td');
+                releaseYearCell.textContent = result[2];
+                row.appendChild(releaseYearCell);
+                const runtimeCell = document.createElement('td');
+                runtimeCell.textContent = result[3];
+                row.appendChild(runtimeCell);
+                const summaryCell = document.createElement('td');
+                summaryCell.textContent = result[4];
+                row.appendChild(summaryCell);
+                newElement.appendChild(row);
+            }
+        }
+        populate_movie_dropdown(results);
+        setResultElement(element, newElement);
     } catch(e) {
-        outText = "Error: " + e.message;
+        setResult(element, "Error: " + e.message);
     }
-    setResult(element, outText);
 }
 
 async function query_users(element) {

@@ -100,6 +100,9 @@ def query_movies():
     title = request.args.get('title')
     cast = request.args.get('cast')
     castid = request.args.get('castid')
+    releaseyear = request.args.get('releaseyear')
+    minruntime = request.args.get('minruntime')
+    maxruntime = request.args.get('maxruntime')
     builder = []
     params = []
     if title is not None:
@@ -111,6 +114,24 @@ def query_movies():
     if castid is not None:
         builder.append('titleid IN (SELECT titleid FROM Cast_Movie WHERE castid = %s)')
         params.append(castid)
+    if releaseyear is not None:
+        builder.append('releaseyear = %s')
+        try:
+            params.append(int(releaseyear))
+        except:
+            raise AppError('Release year must be a number')
+    if minruntime is not None:
+        builder.append('runtimemin >= %s')
+        try:
+            params.append(int(minruntime))
+        except:
+            raise AppError('Minimum runtime must be a number')
+    if maxruntime is not None:
+        builder.append('runtimemin <= %s')
+        try:
+            params.append(int(maxruntime))
+        except:
+            raise AppError('Maximum runtime must be a number')
     with cnx() as conn:
         with conn.cursor() as cursor:
             query = "SELECT * FROM Movies"
