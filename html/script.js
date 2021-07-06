@@ -65,12 +65,13 @@ async function query_movies(element) {
         const results = await get('/api/movies', params);
         const newElement = document.createElement('table');
         newElement.classList.add('data-table');
-        newElement.innerHTML = '<tr><th>Title</th><th>Release year</th><th>Runtime (mins)</th><th>Summary</th></tr>';
+        newElement.innerHTML = '<tr><th>Title</th><th>Release year</th><th>Runtime (mins)</th><th>Summary</th><th></th></tr>';
         if(results.length <= 0) {
             setResult(element, "No results found!");
         } else {
             for(const result of results) {
                 const row = document.createElement('tr');
+                row.dataset.titleid = result[0];
                 const titleCell = document.createElement('td');
                 titleCell.textContent = result[1];
                 row.appendChild(titleCell);
@@ -83,6 +84,11 @@ async function query_movies(element) {
                 const summaryCell = document.createElement('td');
                 summaryCell.textContent = result[4];
                 row.appendChild(summaryCell);
+                /*const commentsCell = document.createElement('td');
+                const viewCommentsButton = document.createElement('button');
+                viewCommentsButton.textContent = 'View comments';
+                commentsCell.appendChild(viewCommentsButton);
+                row.appendChild(commentsCell);*/
                 newElement.appendChild(row);
             }
         }
@@ -91,6 +97,10 @@ async function query_movies(element) {
     } catch(e) {
         setResult(element, "Error: " + e.message);
     }
+}
+
+async function query_comments(titleid) {
+
 }
 
 async function query_users(element) {
@@ -168,14 +178,15 @@ function populate_list_dropdown(result) {
 }
 
 function populate_movie_dropdown(result) {
-    selector = document.getElementById("movie_selector")
-    selector.replaceChildren(); // Clear old entries
-    result.forEach((r) => {
-        const option = document.createElement("option");
-        option.text = r[1]
-        option.value = r[0]
-        selector.add(option)
-    })
+    for(const selector of document.getElementsByClassName("movie-selector")) {
+        selector.replaceChildren(); // Clear old entries
+        result.forEach((r) => {
+            const option = document.createElement("option");
+            option.text = r[1]
+            option.value = r[0]
+            selector.add(option)
+        })
+    }
 }
 
 async function get_personal_lists(element) {
@@ -224,7 +235,7 @@ function format_lists(lists) {
 
 async function add_to_list(element) {
     const listid = document.getElementById('add_to_list_list_selector').value;
-    const titleid = document.getElementById('movie_selector').value;
+    const titleid = document.getElementById('add_to_list_movie_selector').value;
     try {
         await post('/api/list-add', {
             listid: listid,
@@ -247,4 +258,48 @@ async function delete_list(element) {
         outText = "Error: " + e.message;
     }
     setResult(element, outText);
+}
+
+async function add_comment(element) {
+    const comment = document.getElementById('add_comment_comment').value;
+    const titleid = document.getElementById('add_comment_movie_selector').value;
+    const token = sessionStorage.getItem("JWT_token");
+    try {
+        const result = await post('/api/comments', {
+            token,
+            titleid,
+            comment
+        });
+        outText = `Added comment, ID is: ${result.commentid}`;
+    }   catch(e) {
+        outText = "Error: " + e.message;
+    }
+    setResult(element, outText);
+}
+
+async function view_comments(element) {
+    const titleid = document.getElementById('view_comments_movie_selector').value;
+    try {
+        const comments = await get('/api/comments', { titleid });
+        const newElement = document.createElement('table');
+        newElement.classList.add('data-table');
+        newElement.innerHTML = '<tr><th>User</th><th>Comment</th></tr>';
+        if(comments.length <= 0) {
+            setResult(element, "No results found!");
+        } else {
+            for(const result of comments) {
+                const row = document.createElement('tr');
+                const userCell = document.createElement('td');
+                userCell.textContent = result[1];
+                row.appendChild(userCell);
+                const commentCell = document.createElement('td');
+                commentCell.textContent = result[0];
+                row.appendChild(commentCell);
+                newElement.appendChild(row);
+            }
+        }
+        setResultElement(element, newElement);
+    } catch(e) {
+        setResult(element, "Error: " + e.message);
+    }
 }

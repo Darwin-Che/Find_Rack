@@ -85,8 +85,26 @@ table {
         <label>Choose a list:</label>
         <select id="add_to_list_list_selector" class='list-selector' name='lists'></select>
         <label>Choose a movie (from search results):</label>
-        <select id='movie_selector' name='movies'></select>
+        <select id="add_to_list_movie_selector" class='movie-selector' name='movies'></select>
         <button onclick="add_to_list(this)">Go!</button>
+        <pre class="out"></pre>
+    </div>
+    <div>
+        <h2>Add comment to movie</h2>
+        <label>Choose a movie (from search results):</label>
+        <select id="add_comment_movie_selector" class='movie-selector' name='movies'></select>
+        <br/>
+        <label>Input comment:</label>
+        <br/>
+        <textarea id="add_comment_comment"></textarea>
+        <button onclick="add_comment(this)">Go!</button>
+        <pre class="out"></pre>
+    </div>
+    <div>
+        <h2>View movie comments</h2>
+        <label>Choose a movie (from search results):</label>
+        <select id="view_comments_movie_selector" class='movie-selector' name='movies'></select>
+        <button onclick="view_comments(this)">Go!</button>
         <pre class="out"></pre>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>

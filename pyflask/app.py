@@ -28,6 +28,12 @@ DBName = 'MovieList'
 sql_host = os.getenv('DATABASE_HOST', default='localhost')
 sql_port = int(os.getenv('DATABASE_PORT', default='3306'))
 
+def json_serial(obj):
+    if isinstance(obj, datetime.datetime):
+        return obj.replace(tzinfo=datetime.timezone.utc).timestamp()
+
+    raise TypeError ("Type %s not serializable" % type(obj))
+
 def sql_like(like):
     return '%' + like.replace('%', '\\%').replace('_', '\\_') + '%'
 
@@ -139,6 +145,39 @@ def query_movies():
                 query = query + ' WHERE ' + ' AND '.join(builder)
             cursor.execute(query, params)
             return json.dumps(cursor.fetchall())
+
+@app.route('/api/comments')
+def query_comments():
+    titleid = request.args.get('titleid')
+    if titleid is None:
+        raise AppError('titleid cannot be None!')
+    with cnx() as conn:
+        with conn.cursor() as cursor:
+            query = "SELECT comment, username FROM Comments, Users WHERE titleid = %s AND Comments.userid = Users.userid;"
+            cursor.execute(query, [titleid])
+            return json.dumps(cursor.fetchall(), default=json_serial)
+
+@app.route('/api/comments', methods=['POST'])
+def add_comment():
+    try:
+        userid = jwt.decode(bytes(request.json.get('token'), 'utf-8'), jwt_secret, algorithms="HS256")['userid']
+    except:
+        userid = None
+    titleid = request.json.get('titleid')
+    comment = request.json.get('comment')
+    if userid is None:
+        raise AppError('Need to be logged in!')
+    if titleid is None:
+        raise AppError('titleid cannot be None!')
+    if comment is None or len(comment) <= 0:
+        raise AppError('Comment cannot be empty!')
+    commentid = ''.join(random.choices(string.ascii_letters + string.digits, k=11))
+    publishtime = datetime.datetime.now()
+    with cnx() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute("INSERT INTO Comments VALUES (%s, %s, %s, %s, %s)", (commentid, titleid, userid, comment, publishtime))
+        conn.commit()
+    return json.dumps({'commentid': commentid})
 
 @app.route('/api/users')
 def query_users():
