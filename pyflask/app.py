@@ -218,3 +218,21 @@ def add_to_list():
             raise AppError('A list with this name already exists!')
     return json.dumps({'listid': listid})
     
+@app.route('/api/list-delete', methods=['POST'])
+def delete_list():
+    listid = request.json.get('listid')
+    try:
+        userid = jwt.decode(bytes(request.json.get('token'), 'utf-8'), jwt_secret, algorithms="HS256")['userid']
+    except:
+        userid = None
+    if userid is None:
+        raise AppError('Need to be logged in!')
+    if listid is None or len(listid) <= 0:
+        raise AppError('listid cannot be none!')
+    with cnx() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute("DELETE FROM Lists WHERE listid = %s AND userid = %s;", (listid, userid))
+            if cursor.rowcount <= 0:
+                raise AppError('List could not be found!')
+        conn.commit()
+    return json.dumps({})

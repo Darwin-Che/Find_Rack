@@ -58,9 +58,16 @@ pre {
         <pre class="out"></pre>
     </div>
     <div>
+        <h2>Delete list</h2>
+        <label>Choose a list:</label>
+        <select id="delete_list_list_selector" class='list-selector' name='lists'></select>
+        <button onclick="delete_list(this)">Go!</button>
+        <pre class="out"></pre>
+    </div>
+    <div>
         <h2>Add a movie to a list</h2>
         <label>Choose a list:</label>
-        <select id='list_selector' name='lists'></select>
+        <select id="add_to_list_list_selector" class='list-selector' name='lists'></select>
         <label>Choose a movie (from search results):</label>
         <select id='movie_selector' name='movies'></select>
         <button onclick="add_to_list(this)">Go!</button>

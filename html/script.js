@@ -114,14 +114,15 @@ async function create_list(element) {
 }
 
 function populate_list_dropdown(result) {
-    selector = document.getElementById("list_selector")
-    selector.replaceChildren(); // Clear old entries
-    Object.keys(result).forEach((k) => {
-        const option = document.createElement("option");
-        option.text = result[k]['name']
-        option.value = k
-        selector.add(option)
-    })
+    for(const selector of document.getElementsByClassName("list-selector")) {
+        selector.replaceChildren(); // Clear old entries
+        Object.keys(result).forEach((k) => {
+            const option = document.createElement("option");
+            option.text = result[k]['name']
+            option.value = k
+            selector.add(option)
+        })
+    }
 }
 
 function populate_movie_dropdown(result) {
@@ -180,7 +181,7 @@ function format_lists(lists) {
 }
 
 async function add_to_list(element) {
-    const listid = document.getElementById('list_selector').value;
+    const listid = document.getElementById('add_to_list_list_selector').value;
     const titleid = document.getElementById('movie_selector').value;
     try {
         await post('/api/list-add', {
@@ -188,6 +189,18 @@ async function add_to_list(element) {
             titleid: titleid,
         });
         outText = `Added title:${titleid} to list:${listid}`;
+    }   catch(e) {
+        outText = "Error: " + e.message;
+    }
+    setResult(element, outText);
+}
+
+async function delete_list(element) {
+    const listid = document.getElementById('delete_list_list_selector').value;
+    const token = sessionStorage.getItem("JWT_token");
+    try {
+        await post('/api/list-delete', { listid, token });
+        outText = `Deleted list: ${listid}`;
     }   catch(e) {
         outText = "Error: " + e.message;
     }
