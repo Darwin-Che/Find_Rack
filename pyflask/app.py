@@ -153,7 +153,7 @@ def query_comments():
         raise AppError('titleid cannot be None!')
     with cnx() as conn:
         with conn.cursor() as cursor:
-            query = "SELECT comment, username FROM Comments, Users WHERE titleid = %s AND Comments.userid = Users.userid;"
+            query = "SELECT comment, username, publishtime FROM Comments, Users WHERE titleid = %s AND Comments.userid = Users.userid;"
             cursor.execute(query, [titleid])
             return json.dumps(cursor.fetchall(), default=json_serial)
 
@@ -226,18 +226,22 @@ def login():
 
 @app.route('/api/lists', methods=['GET'])
 def get_lists():
+    try:
+        searcherid = jwt.decode(bytes(request.args.get('token'), 'utf-8'), jwt_secret, algorithms="HS256")['userid']
+    except:
+        searcherid = None
     userid = request.args.get('userid')
     if not userid:
         raise AppError('No user id supplied!')
     response = {}
     with cnx() as conn:
         with conn.cursor() as cursor:
-            cursor.execute("SELECT listname, title, listid FROM (SELECT Lists.listid, listname, titleid FROM Lists LEFT JOIN List_Movie ON Lists.listid=List_Movie.listid WHERE Lists.userid=%s) AS E LEFT JOIN Movies on E.titleid=Movies.titleid;", (userid,))
+            cursor.execute("SELECT listname, title, listid, subscribeto FROM (SELECT Lists.listid AS listid, listname, titleid FROM Lists LEFT JOIN List_Movie ON Lists.listid=List_Movie.listid WHERE Lists.userid=%s) AS E LEFT JOIN Movies on E.titleid=Movies.titleid LEFT JOIN Subscription ON Subscription.subscriber = %s AND Subscription.subscribeto = E.listid;", (userid, searcherid))
             for row in cursor.fetchall():
                 if (row[2] in response):
                     response[row[2]]['titles'].append(row[1])
                 else:
-                    response[row[2]] = {'name': row[0], 'titles': [row[1]] if row[1] else []} 
+                    response[row[2]] = {'name': row[0], 'subscribed': row[3] is not None, 'titles': [row[1]] if row[1] else []} 
             return json.dumps(response)
             
 @app.route('/api/lists', methods=['POST'])
@@ -294,5 +298,28 @@ def delete_list():
             cursor.execute("DELETE FROM Lists WHERE listid = %s AND userid = %s;", (listid, userid))
             if cursor.rowcount <= 0:
                 raise AppError('List could not be found!')
+        conn.commit()
+    return json.dumps({})
+
+@app.route('/api/subscriptions', methods=['POST'])
+def add_subscription():
+    try:
+        userid = jwt.decode(bytes(request.json.get('token'), 'utf-8'), jwt_secret, algorithms="HS256")['userid']
+    except:
+        userid = None
+    listid = request.json.get('listid')
+    subscribe = request.json.get('subscribe')
+    if listid is None or len(listid) <= 0:
+        raise AppError('listid cannot be none!')
+    if subscribe is None:
+        raise AppError('subscribe cannot be none!')
+    if userid is None:
+        raise AppError('You must be logged in!')
+    with cnx() as conn:
+        with conn.cursor() as cursor:
+            if subscribe:
+                cursor.execute("INSERT INTO Subscription VALUES (%s, %s)", (userid, listid))
+            else:
+                cursor.execute("DELETE FROM Subscription WHERE subscriber = %s AND subscribeto = %s", (userid, listid))
         conn.commit()
     return json.dumps({})

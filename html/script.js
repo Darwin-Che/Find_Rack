@@ -196,7 +196,8 @@ async function get_personal_lists(element) {
             const userid = jwt_decode(token).userid;
             const lists = await get_lists_internal(element, userid);
             populate_list_dropdown(lists)
-            outText = format_lists(lists);
+            format_lists(element, lists, true);
+            return;
         } catch(e) {
             outText = "Error: " + e.message;
         }
@@ -210,7 +211,8 @@ async function get_lists(element) {
     const userid = document.getElementById("get_lists_userid");
     try {
         const lists = await get_lists_internal(element, userid.value);
-        outText = format_lists(lists);
+        format_lists(element, lists, false);
+        return;
     } catch(e) {
         outText = "Error: " + e.message;
     }
@@ -218,11 +220,62 @@ async function get_lists(element) {
 }
 
 async function get_lists_internal(element, userid) {
-    return await get('/api/lists', { userid });
+    const token = sessionStorage.getItem("JWT_token");
+    return await get('/api/lists', { userid, token });
 }
 
-function format_lists(lists) {
-    let out = `${Object.values(lists).length} list(s) were found:\n\n`;
+function format_lists(element, lists, own) {
+    if(lists.length <= 0) {
+        setResult(element, "No results found!");
+    } else {
+        const newElement = document.createElement('table');
+        newElement.classList.add('data-table');
+        newElement.innerHTML = '<tr><th></th><th>List</th><th>Titles</th></tr>';
+        for(const listid of Object.keys(lists)) {
+            const list = lists[listid];
+
+            const row = document.createElement('tr');
+            row.dataset.listid = listid;
+            row.dataset.subscribed = list.subscribed;
+            const subCell = document.createElement('td');
+            if(!own) {
+                const subBtn = document.createElement('button');
+                subBtn.textContent = list.subscribed ? 'Unsubscribe' : 'Subscribe';
+                subBtn.onclick = async () => {
+                    const token = sessionStorage.getItem("JWT_token");
+                    try {
+                        await post('/api/subscriptions', {
+                            token,
+                            listid: row.dataset.listid,
+                            subscribe: row.dataset.subscribed == 'false'
+                        });
+                    } catch(e) {
+                        alert('Operation failed, error: ' + e.message);
+                    }
+                    get_lists(element);
+                };
+                subCell.appendChild(subBtn);
+            }
+            row.appendChild(subCell);
+            const listNameCell = document.createElement('td');
+            listNameCell.textContent = list.name;
+            row.appendChild(listNameCell);
+            const titlesCell = document.createElement('td');
+            const titlesList = document.createElement('ul');
+            for(const title of list.titles) {
+                const titleElement = document.createElement('li');
+                titleElement.textContent = title;
+                titlesList.appendChild(titleElement);
+            }
+            titlesCell.appendChild(titlesList);
+            row.appendChild(titlesCell);
+
+            newElement.appendChild(row);
+        }
+        setResultElement(element, newElement);
+    }
+
+    /*let out = `${Object.values(lists).length} list(s) were found:\n\n`;
     for(const list of Object.values(lists)) {
         out += `${list.name} (contains ${list.titles.length} movies):\n`;
         for(const title of list.titles) {
@@ -230,7 +283,7 @@ function format_lists(lists) {
         }
         out += "\n";
     }
-    return out;
+    return out;*/
 }
 
 async function add_to_list(element) {
