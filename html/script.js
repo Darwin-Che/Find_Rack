@@ -36,6 +36,34 @@ function setResultElement(element, newElement) {
     element.parentElement.querySelector(".out").replaceWith(newElement);
 }
 
+function format_movies(element, results) {
+    const newElement = document.createElement('table');
+    newElement.classList.add('data-table');
+    newElement.innerHTML = '<tr><th>Title</th><th>Release year</th><th>Runtime (mins)</th><th>Summary</th><th></th></tr>';
+    if(results.length <= 0) {
+        setResult(element, "No results found!");
+    } else {
+        for(const result of results) {
+            const row = document.createElement('tr');
+            row.dataset.titleid = result[0];
+            const titleCell = document.createElement('td');
+            titleCell.textContent = result[1];
+            row.appendChild(titleCell);
+            const releaseYearCell = document.createElement('td');
+            releaseYearCell.textContent = result[2];
+            row.appendChild(releaseYearCell);
+            const runtimeCell = document.createElement('td');
+            runtimeCell.textContent = result[3];
+            row.appendChild(runtimeCell);
+            const summaryCell = document.createElement('td');
+            summaryCell.textContent = result[4];
+            row.appendChild(summaryCell);
+            newElement.appendChild(row);
+        }
+    }
+    setResultElement(element, newElement);
+}
+
 async function query_movies(element) {
     const titleInput = document.getElementById("query_movies_title");
     const castInput = document.getElementById("query_movies_cast");
@@ -63,37 +91,8 @@ async function query_movies(element) {
         if(Object.keys(params).length <= 0)
             throw new Error('Please use at least one filter.');
         const results = await get('/api/movies', params);
-        const newElement = document.createElement('table');
-        newElement.classList.add('data-table');
-        newElement.innerHTML = '<tr><th>Title</th><th>Release year</th><th>Runtime (mins)</th><th>Summary</th><th></th></tr>';
-        if(results.length <= 0) {
-            setResult(element, "No results found!");
-        } else {
-            for(const result of results) {
-                const row = document.createElement('tr');
-                row.dataset.titleid = result[0];
-                const titleCell = document.createElement('td');
-                titleCell.textContent = result[1];
-                row.appendChild(titleCell);
-                const releaseYearCell = document.createElement('td');
-                releaseYearCell.textContent = result[2];
-                row.appendChild(releaseYearCell);
-                const runtimeCell = document.createElement('td');
-                runtimeCell.textContent = result[3];
-                row.appendChild(runtimeCell);
-                const summaryCell = document.createElement('td');
-                summaryCell.textContent = result[4];
-                row.appendChild(summaryCell);
-                /*const commentsCell = document.createElement('td');
-                const viewCommentsButton = document.createElement('button');
-                viewCommentsButton.textContent = 'View comments';
-                commentsCell.appendChild(viewCommentsButton);
-                row.appendChild(commentsCell);*/
-                newElement.appendChild(row);
-            }
-        }
         populate_movie_dropdown(results);
-        setResultElement(element, newElement);
+        format_movies(element, results);
     } catch(e) {
         setResult(element, "Error: " + e.message);
     }
@@ -194,9 +193,9 @@ async function get_personal_lists(element) {
     if(token != null) {
         try {
             const userid = jwt_decode(token).userid;
-            const lists = await get_lists_internal(element, userid);
+            const lists = await get_lists_internal(element, {userid});
             populate_list_dropdown(lists)
-            format_lists(element, lists, true);
+            format_lists(element, lists, true, false);
             return;
         } catch(e) {
             outText = "Error: " + e.message;
@@ -210,8 +209,8 @@ async function get_personal_lists(element) {
 async function get_lists(element) {
     const userid = document.getElementById("get_lists_userid");
     try {
-        const lists = await get_lists_internal(element, userid.value);
-        format_lists(element, lists, false);
+        const lists = await get_lists_internal(element, {userid: userid.value});
+        format_lists(element, lists, false, false);
         return;
     } catch(e) {
         outText = "Error: " + e.message;
@@ -219,18 +218,31 @@ async function get_lists(element) {
     setResult(element, outText);
 }
 
-async function get_lists_internal(element, userid) {
-    const token = sessionStorage.getItem("JWT_token");
-    return await get('/api/lists', { userid, token });
+async function get_lists_by_name(element) {
+    const name = document.getElementById("get_lists_name");
+    try {
+        const lists = await get_lists_internal(element, {name: name.value});
+        format_lists(element, lists, false, true);
+        return;
+    } catch(e) {
+        outText = "Error: " + e.message;
+    }
+    setResult(element, outText);
 }
 
-function format_lists(element, lists, own) {
+async function get_lists_internal(element, options) {
+    const token = sessionStorage.getItem("JWT_token");
+    return await get('/api/lists', { ...options, token });
+}
+
+function format_lists(element, lists, own, showOwner) {
     if(lists.length <= 0) {
         setResult(element, "No results found!");
     } else {
         const newElement = document.createElement('table');
         newElement.classList.add('data-table');
-        newElement.innerHTML = '<tr><th></th><th>List</th><th>Titles</th></tr>';
+        if(showOwner) newElement.classList.add('show-owner');
+        newElement.innerHTML = '<tr><th></th><th>List</th><th class="shown-owner">Creator</th><th>Titles</th></tr>';
         for(const listid of Object.keys(lists)) {
             const list = lists[listid];
 
@@ -260,6 +272,10 @@ function format_lists(element, lists, own) {
             const listNameCell = document.createElement('td');
             listNameCell.textContent = list.name;
             row.appendChild(listNameCell);
+            const listOwnerCell = document.createElement('td');
+            listOwnerCell.className = 'shown-owner';
+            listOwnerCell.textContent = list.username;
+            row.appendChild(listOwnerCell);
             const titlesCell = document.createElement('td');
             const titlesList = document.createElement('ul');
             for(const title of list.titles) {
@@ -356,3 +372,39 @@ async function view_comments(element) {
         setResult(element, "Error: " + e.message);
     }
 }
+
+async function suggest_movie(element) {
+    const movie_selector = document.getElementById('suggest_movie_genre_selector');
+    const genre = movie_selector.value;
+    try {
+        const result = await post('/api/suggest', {genre});
+        format_movies(element, [result]);
+    } catch(e) {
+        setResult(element, "Error: " + e.message);
+    }
+}
+
+function populate_genre_selector(result) {
+    for(const selector of document.getElementsByClassName("genre-selector")) {
+        selector.replaceChildren(); // Clear old entries
+        result.forEach((r) => {
+            const option = document.createElement("option");
+            option.text = r;
+            option.value = r;
+            selector.add(option);
+        })
+    }
+}
+
+async function setup_genre_selector() {
+    try {
+        const genres = await get('/api/genres');
+        genres.sort();
+        populate_genre_selector(genres);
+    } catch(e) {
+        alert('Error loading genres!');
+        console.error('Error loading genres.', e);
+    }
+}
+
+setup_genre_selector();

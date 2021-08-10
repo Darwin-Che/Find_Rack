@@ -11,6 +11,9 @@ td, th {
 table {
     border-collapse: collapse;
 }
+table.data-table:not(.show-owner) .shown-owner{
+    display: none;
+}
 </style>
 </head>
 <body>
@@ -71,6 +74,9 @@ table {
         <h4>View another user's lists</h4>
         <input id="get_lists_userid" type="text" placeholder="User ID (not username)"/>
         <button onclick="get_lists(this)">Go!</button>
+        <h4>Search for list by name:</h4>
+        <input id="get_lists_name" type="text" placeholder="List name"/>
+        <button onclick="get_lists_by_name(this)">Go!</button>
         <pre class="out"></pre>
     </div>
     <div>
@@ -105,6 +111,13 @@ table {
         <label>Choose a movie (from search results):</label>
         <select id="view_comments_movie_selector" class='movie-selector' name='movies'></select>
         <button onclick="view_comments(this)">Go!</button>
+        <pre class="out"></pre>
+    </div>
+    <div>
+        <h2>Suggest movie</h2>
+        <label>Suggest a movie by genre:</label>
+        <select id="suggest_movie_genre_selector" class='genre-selector' name='genres'></select>
+        <button onclick="suggest_movie(this)">Go!</button>
         <pre class="out"></pre>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>

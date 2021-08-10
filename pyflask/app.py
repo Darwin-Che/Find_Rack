@@ -230,18 +230,31 @@ def get_lists():
         searcherid = jwt.decode(bytes(request.args.get('token'), 'utf-8'), jwt_secret, algorithms="HS256")['userid']
     except:
         searcherid = None
+
+    builder = []
+    params = []
     userid = request.args.get('userid')
-    if not userid:
-        raise AppError('No user id supplied!')
+    name = request.args.get('name')
+    if userid is not None:
+        builder.append('Lists.userid = %s')
+        params.append(userid)
+    if name is not None:
+        builder.append('Lists.listname LIKE %s')
+        params.append(sql_like(name))
+    params.append(searcherid)
+    if builder:
+        conditions = 'WHERE ' + ' AND '.join(builder)
+    else:
+        conditions = ""
     response = {}
     with cnx() as conn:
         with conn.cursor() as cursor:
-            cursor.execute("SELECT listname, title, listid, subscribeto FROM (SELECT Lists.listid AS listid, listname, titleid FROM Lists LEFT JOIN List_Movie ON Lists.listid=List_Movie.listid WHERE Lists.userid=%s) AS E LEFT JOIN Movies on E.titleid=Movies.titleid LEFT JOIN Subscription ON Subscription.subscriber = %s AND Subscription.subscribeto = E.listid;", (userid, searcherid))
+            cursor.execute(f"SELECT listname, title, listid, subscribeto, U.userid, U.username FROM (SELECT Lists.listid AS listid, listname, titleid, userid FROM Lists LEFT JOIN List_Movie ON Lists.listid=List_Movie.listid {conditions}) AS E LEFT JOIN Movies on E.titleid=Movies.titleid LEFT JOIN Subscription ON Subscription.subscriber = %s AND Subscription.subscribeto = E.listid JOIN Users AS U ON E.userid = U.userid;", params)
             for row in cursor.fetchall():
                 if (row[2] in response):
                     response[row[2]]['titles'].append(row[1])
                 else:
-                    response[row[2]] = {'name': row[0], 'subscribed': row[3] is not None, 'titles': [row[1]] if row[1] else []} 
+                    response[row[2]] = {'name': row[0], 'subscribed': row[3] is not None, 'userid': row[4], 'username': row[5], 'titles': [row[1]] if row[1] else []} 
             return json.dumps(response)
             
 @app.route('/api/lists', methods=['POST'])
@@ -323,3 +336,18 @@ def add_subscription():
                 cursor.execute("DELETE FROM Subscription WHERE subscriber = %s AND subscribeto = %s", (userid, listid))
         conn.commit()
     return json.dumps({})
+
+@app.route('/api/genres', methods=['GET'])
+def get_genres():
+    with cnx() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT DISTINCT genre from Genre_Movie;")
+            return json.dumps([x[0] for x in cursor.fetchall()])
+
+@app.route('/api/suggest', methods=['POST'])
+def suggest_movie():
+    genre = request.json.get('genre')
+    with cnx() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT M.* FROM Movies as M, Genre_Movie as G WHERE M.titleid = G.titleid AND genre = %s ORDER BY RAND() LIMIT 1;", [genre])
+            return json.dumps(cursor.fetchone())
