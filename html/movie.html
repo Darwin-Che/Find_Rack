@@ -1,0 +1,110 @@
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+        <style>
+    body {
+        background-color: #2b2d2f;
+        color: #ffffff;
+        font-family: 'Open Sans';
+    }
+    header {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;  
+    }
+    .main {
+        max-width: 800px;
+        margin: 0 auto;
+        /* text-align: center; */
+    }
+    ul {
+        list-style: none;
+    }
+    li::first-letter {
+        text-transform:capitalize;
+    }
+    a:link {
+        color: white;
+        background-color: transparent;
+        text-decoration: none;
+    }
+
+    a:visited {
+        color: white;
+        background-color: transparent;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: red;
+        background-color: transparent;
+        text-decoration: underline;
+    }
+
+    a:active {
+        color: yellow;
+        background-color: transparent;
+        text-decoration: underline;
+    }
+    .list-wrapper {
+        text-align: center;
+    }
+    textarea.input {
+        width: 100%;
+        font-family: "Open Sans";
+    }
+    .post {
+        background-color: white;
+        color: black;
+        border: 2px solid black; /* Green */
+        border-radius: 4px; 
+        font-family: "Open Sans";
+    }
+    .post:hover {
+        color:white;
+        background-color: black;
+    }
+    .centre {
+        text-align: center;
+    }
+    .display-none {
+        display: none;
+    }
+</style>
+</head>
+<body>
+<header class="header">
+    <h1>Movie List</h1>
+</header>
+<div class="main">
+    <div class="centre">
+        <label id="signin"></label>
+        <br/>
+        <a id="signin-link" href="/signin.html">Sign In</a>
+    </div>
+    <h1 id="title">Loading...</h1>
+    <label id="year"></label>
+    <br/>
+    <label id="runtime"></label>
+    <p id="summary"></p>
+    <div class="display-none" id="list-add">
+        <label>Add to list:</label>
+        <select id="add_to_list_list_selector" class='list-selector' name='lists'></select>
+        <button class="post" onclick="add_to_list(this)">Go!</button>
+    </div>
+    <h2>Cast</h2>
+    <ul id="cast-list">    </ul>
+    <h2>Comments</h2>
+    <ul id="comments-list">
+        <li>
+            <textarea type="text" id="comment-text" class="input" placeholder="Write a comment"></textarea>
+            <br/>
+            <button class="post" onclick="post_comment(this)">Post</button>
+            <hr/>
+        </li>
+    </ul>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
+<script src="/script.js"></script>
+<script src="/movie_script.js"></script>
+</body>
+    

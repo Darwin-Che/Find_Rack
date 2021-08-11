@@ -16,11 +16,12 @@ from pathlib import Path
 
 from flask import Flask, request, send_from_directory, make_response
 
+app = Flask(__name__)
+
 html_root_path = str(Path('..', 'html').resolve())
 
 jwt_secret = 'opensesame'
 
-app = Flask(__name__) 
 app.logger.setLevel(logging.DEBUG)
 
 DBName = 'MovieList'
@@ -154,6 +155,28 @@ def query_comments():
     with cnx() as conn:
         with conn.cursor() as cursor:
             query = "SELECT comment, username, publishtime FROM Comments, Users WHERE titleid = %s AND Comments.userid = Users.userid;"
+            cursor.execute(query, [titleid])
+            return json.dumps(cursor.fetchall(), default=json_serial)
+
+@app.route('/api/movieid')
+def movie_id():
+    titleid = request.args.get('titleid')
+    if titleid is None: 
+        raise AppError('titleid cannot be None!')
+    with cnx() as conn:
+        with conn.cursor() as cursor:
+            query = "SELECT * FROM Movies WHERE titleid = %s;"
+            cursor.execute(query, [titleid])
+            return json.dumps(cursor.fetchall(), default=json_serial)
+
+@app.route('/api/cast')
+def get_cast():
+    titleid = request.args.get('titleid')
+    if titleid is None:
+        raise AppError('titleid cannot be None!')
+    with cnx() as conn:
+        with conn.cursor() as cursor:
+            query = "SELECT castname, role FROM Cast_Movie, Casts WHERE Casts.castid = Cast_Movie.castid AND titleid = %s;"
             cursor.execute(query, [titleid])
             return json.dumps(cursor.fetchall(), default=json_serial)
 

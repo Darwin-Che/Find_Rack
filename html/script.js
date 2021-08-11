@@ -408,3 +408,43 @@ async function setup_genre_selector() {
 }
 
 setup_genre_selector();
+
+function checkLogin() {
+    if (sessionStorage.getItem("JWT_token")) {
+        console.log("yoo")
+        const label = document.getElementById('signin');
+        const href = document.getElementById('signin-link');
+        var username = sessionStorage.getItem("username");
+        label.innerHTML = `Logged in as ${username}`;
+        href.removeAttribute("href");
+        href.innerHTML = "Sign Out";
+        href.onclick = () => {
+            sessionStorage.removeItem("JWT_token");
+            sessionStorage.removeItem("userid");
+            sessionStorage.removeItem("username");
+            window.location.replace("/home.html")
+        }
+        return true;
+    }
+    return false;
+}
+
+function deleteChild(e) {
+    var child = e.lastElementChild; 
+    while (child) {
+        e.removeChild(child);
+        child = e.lastElementChild;
+    }
+}
+
+function getQueryVariable(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split('&');
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) == variable) {
+            return decodeURIComponent(pair[1]);
+        }
+    }
+    console.log('Query variable %s not found', variable);
+}
