@@ -71,6 +71,10 @@ table.data-table:not(.show-owner) .shown-owner{
         <h2>View Lists</h2>
         <h4>View your lists</h4>
         <button onclick="get_personal_lists(this)">View my lists</button>
+        <h4>View all lists</h4>
+        <button onclick="get_all_lists(this)">View all lists</button>
+        <h4>View lists you are subscribed to</h4>
+        <button onclick="get_subscribed_lists(this)">View subscribed lists</button>
         <h4>View another user's lists</h4>
         <input id="get_lists_userid" type="text" placeholder="User ID (not username)"/>
         <button onclick="get_lists(this)">Go!</button>

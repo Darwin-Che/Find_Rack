@@ -33,6 +33,25 @@ services:
             - ../:/app
             - database:/var/lib/mysql
             - app_context:/context
+    app-remote:
+        build:
+            context: ../
+            dockerfile: docker/app/Dockerfile
+        image: cs348-movielist-app-image
+        container_name: cs348_movielist_app_remote
+        restart: always
+        profiles:
+            - ignore
+        volumes:
+            - ../:/app
+            - app_context:/context
+        ports:
+            - "5000:5000"
+        entrypoint: ["bash", "-c", "cd /app/pyflask && flask run --host=0.0.0.0"]
+        environment:
+            - USE_REAL_DATA
+            - DATABASE_HOST=burst.srv.vepta.org
+            - DATABASE_PORT=13306
     from-snapshot:
         image: busybox:stable
         restart: "no"

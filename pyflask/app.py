@@ -235,12 +235,15 @@ def get_lists():
     params = []
     userid = request.args.get('userid')
     name = request.args.get('name')
+    subscribed = request.args.get('subscribed')
     if userid is not None:
-        builder.append('Lists.userid = %s')
+        builder.append('E.userid = %s')
         params.append(userid)
     if name is not None:
-        builder.append('Lists.listname LIKE %s')
+        builder.append('E.listname LIKE %s')
         params.append(sql_like(name))
+    if subscribed:
+        builder.append('S.subscribeto IS NOT NULL')
     params.append(searcherid)
     if builder:
         conditions = 'WHERE ' + ' AND '.join(builder)
@@ -249,7 +252,7 @@ def get_lists():
     response = {}
     with cnx() as conn:
         with conn.cursor() as cursor:
-            cursor.execute(f"SELECT listname, title, listid, subscribeto, U.userid, U.username FROM (SELECT Lists.listid AS listid, listname, titleid, userid FROM Lists LEFT JOIN List_Movie ON Lists.listid=List_Movie.listid {conditions}) AS E LEFT JOIN Movies on E.titleid=Movies.titleid LEFT JOIN Subscription ON Subscription.subscriber = %s AND Subscription.subscribeto = E.listid JOIN Users AS U ON E.userid = U.userid;", params)
+            cursor.execute(f"SELECT listname, title, listid, subscribeto, U.userid, U.username FROM (SELECT Lists.listid AS listid, listname, titleid, userid FROM Lists LEFT JOIN List_Movie ON Lists.listid=List_Movie.listid) AS E LEFT JOIN Movies on E.titleid=Movies.titleid LEFT JOIN Subscription AS S ON S.subscriber = %s AND S.subscribeto = E.listid JOIN Users AS U ON E.userid = U.userid {conditions};", params)
             for row in cursor.fetchall():
                 if (row[2] in response):
                     response[row[2]]['titles'].append(row[1])
