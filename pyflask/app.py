@@ -266,12 +266,15 @@ def get_lists():
     params = []
     userid = request.args.get('userid')
     name = request.args.get('name')
+    subscribed = request.args.get('subscribed')
     if userid is not None:
-        builder.append('Lists.userid = %s')
+        builder.append('E.userid = %s')
         params.append(userid)
     if name is not None:
-        builder.append('Lists.listname LIKE %s')
+        builder.append('E.listname LIKE %s')
         params.append(sql_like(name))
+    if subscribed:
+        builder.append('S.subscribeto IS NOT NULL')
     params.append(searcherid)
     if builder:
         conditions = 'WHERE ' + ' AND '.join(builder)

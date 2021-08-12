@@ -191,7 +191,25 @@ async function get_personal_lists(element) {
             const userid = jwt_decode(token).userid;
             const lists = await get_lists_internal(element, {userid});
             populate_list_dropdown(lists)
-            format_lists(element, lists, true, false);
+            format_lists(get_personal_lists, element, lists, true, false);
+            return;
+        } catch(e) {
+            outText = "Error: " + e.message;
+        }
+    } else {
+        outText = "You must be logged in!";
+    }
+    setResult(element, outText);
+}
+
+async function get_all_lists(element) {
+    const token = sessionStorage.getItem("JWT_token");
+    if(token != null) {
+        try {
+            const userid = jwt_decode(token).userid;
+            const lists = await get_lists_internal(element, {});
+            populate_list_dropdown(lists);
+            format_lists(get_all_lists, element, lists, false, true);
             return;
         } catch(e) {
             outText = "Error: " + e.message;
@@ -206,7 +224,7 @@ async function get_lists(element) {
     const userid = document.getElementById("get_lists_userid");
     try {
         const lists = await get_lists_internal(element, {userid: userid.value});
-        format_lists(element, lists, false, false);
+        format_lists(get_lists, element, lists, false, false);
         return;
     } catch(e) {
         outText = "Error: " + e.message;
@@ -218,7 +236,7 @@ async function get_lists_by_name(element) {
     const name = document.getElementById("get_lists_name");
     try {
         const lists = await get_lists_internal(element, {name: name.value});
-        format_lists(element, lists, false, true);
+        format_lists(get_lists_by_name, element, lists, false, true);
         return;
     } catch(e) {
         outText = "Error: " + e.message;
@@ -226,12 +244,31 @@ async function get_lists_by_name(element) {
     setResult(element, outText);
 }
 
+async function get_subscribed_lists(element) {
+    const token = sessionStorage.getItem("JWT_token");
+    if(token != null) {
+        try {
+            const userid = jwt_decode(token).userid;
+            const lists = await get_lists_internal(element, {subscribed:true});
+            populate_list_dropdown(lists);
+            format_lists(get_subscribed_lists, element, lists, false, true);
+            return;
+        } catch(e) {
+            outText = "Error: " + e.message;
+        }
+    } else {
+        outText = "You must be logged in!";
+    }
+    setResult(element, outText);
+}
+
+
 async function get_lists_internal(element, options) {
     const token = sessionStorage.getItem("JWT_token");
     return await get('/api/lists', { ...options, token });
 }
 
-function format_lists(element, lists, own, showOwner) {
+function format_lists(caller, element, lists, own, showOwner) {
     if(lists.length <= 0) {
         setResult(element, "No results found!");
     } else {
@@ -260,7 +297,7 @@ function format_lists(element, lists, own, showOwner) {
                     } catch(e) {
                         alert('Operation failed, error: ' + e.message);
                     }
-                    get_lists(element);
+                    caller(element);
                 };
                 subCell.appendChild(subBtn);
             }
