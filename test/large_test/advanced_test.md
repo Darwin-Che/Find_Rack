@@ -1,14 +1,29 @@
-# Advanced Test Strategy
+# create fake user data
 
-## Check UTF-8 chars for eligible columns
+Step 1 : 
 
-## Check movie attributes can be altered
+In this directory, execute
 
-## Cancel subscription
+```
+python large-data-create.py
+```
 
-## Delete a Comment
+And follow the guide to generate data saved in files in this directory. 
 
-## Delete a List
+Step 2 :
 
-## Delete a Movie
+If you want to get the files into a remote mysql server, make sure that 
+
+1. connect with this option `'--local-infile=1'`
+2. run this in mysql `SET GLOBAL local_infile=1;`
+
+And then do 
+
+```
+source drop_large_test.sql
+source create_large_test.sql
+source populate_large_test.sql
+```
+
+
 

@@ -1,4 +1,4 @@
-LOAD DATA LOCAL INFILE "/Users/czc/At_UW/3A/cs348/project/project/test/large_test/users.scsv"
+LOAD DATA INFILE "path/users.scsv"
 IGNORE
 INTO TABLE Users
 COLUMNS TERMINATED BY ';'
@@ -8,7 +8,7 @@ IGNORE 1 LINES
 (userid, username, @var1)
 SET password = UNHEX(@var1);
 
-LOAD DATA LOCAL INFILE "/Users/czc/At_UW/3A/cs348/project/project/test/large_test/lists.scsv"
+LOAD DATA INFILE "path/lists.scsv"
 IGNORE
 INTO TABLE Lists
 CHARACTER SET utf8mb4
@@ -17,7 +17,7 @@ OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 
-LOAD DATA LOCAL INFILE "/Users/czc/At_UW/3A/cs348/project/project/test/large_test/list_movie.scsv"
+LOAD DATA INFILE "path/list_movie.scsv"
 IGNORE
 INTO TABLE List_Movie
 CHARACTER SET utf8mb4
@@ -26,7 +26,7 @@ OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 
-LOAD DATA LOCAL INFILE "/Users/czc/At_UW/3A/cs348/project/project/test/large_test/comments.scsv"
+LOAD DATA INFILE "path/comments.scsv"
 IGNORE
 INTO TABLE Comments
 CHARACTER SET utf8mb4
@@ -35,7 +35,7 @@ OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 
-LOAD DATA LOCAL INFILE "/Users/czc/At_UW/3A/cs348/project/project/test/large_test/subscription.scsv"
+LOAD DATA INFILE "path/subscription.scsv"
 IGNORE
 INTO TABLE Subscription
 CHARACTER SET utf8mb4

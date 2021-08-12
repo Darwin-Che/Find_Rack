@@ -3,11 +3,21 @@ import os
 import datetime
 import mysql.connector
 from pathlib import Path
+import hashlib
+import binascii
+
+def hash_password(password, salt=os.urandom(32)):
+	hash = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
+	return str(binascii.hexlify(salt + hash))[2:-1]
+
 
 #### 
 print('load in the entries of Movies.scsv')
 print('enter path to movies.scsv (e.g. input ../../realdata/movies.scsv)')
 movies_path = input()
+if (movies_path == ''):
+	movies_path='../../realdata/movies.scsv'
+
 f = open(movies_path)
 movies = f.readlines()
 f.close()
@@ -26,7 +36,7 @@ f = open("users.scsv", "w")
 f.write('userid;username;password\n');
 
 for i in range(user_n):
-	f.write('u{};user{};passwordfor{}\n'.format(i, i, i))
+	f.write('u{};user{};{}\n'.format(i, i, hash_password('passwordfor{}'.format(i), os.urandom(32))))
 
 f.close()
 
@@ -109,6 +119,15 @@ else:
 		for j in range(l):
 			f.write('u{};l{}\n'.format(i, sample[j]))
 
+f.close()
+
+#### generate sql file
+
+work_dir = str(Path().absolute())
+newsql = Path(work_dir, 'template_populate_large_test.sql').read_text().replace('path', work_dir).replace('LOAD DATA INFILE', 'LOAD DATA LOCAL INFILE')
+
+f = open("populate_large_test.sql", "w")
+f.write(newsql)
 f.close()
 
 #### do you want to write these data to the database?
