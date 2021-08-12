@@ -76,4 +76,23 @@ document.addEventListener("DOMContentLoaded", async function() {
     summary_elem.appendChild(document.createTextNode(movie_info[0][4]));
     populateCast(cast_info);
     populateComments(comments);
+    if (loggedIn) {
+        const lists = await get_lists_internal(null, {userid: sessionStorage.getItem("userid")});
+        populate_list_dropdown(lists);
+        const addlist = document.getElementById("list-add");
+        addlist.setAttribute("class", "");
+    }
 });
+
+async function add_to_list(element) {
+    const listid = document.getElementById('add_to_list_list_selector').value;
+    try {
+        await post('/api/list-add', {
+            listid: listid,
+            titleid: titleid,
+        });
+        alert("Success!");
+    }   catch(e) {
+        alert("Error: " + e.message);
+    }
+};
