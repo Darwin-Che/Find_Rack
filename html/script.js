@@ -481,3 +481,24 @@ function getQueryVariable(variable) {
     }
     console.log('Query variable %s not found', variable);
 }
+
+function formatLists(elem, result, type) {
+    Object.keys(result).forEach(key => {
+        console.log(result[key])
+        const div = document.createElement("div")
+        div.setAttribute("id", key)
+        x = ""
+        for (let i = 0; i < result[key]['titles'].length; ++i) {
+            x += `<li class="mvl" id="${key}-${result[key]['titles'][i]}"><a href="/movie.html?m=${result[key]['titles'][i]}">${result[key]['titlenames'][i]}</a>${type == 0 ? `<label class="btn" onclick="rmlist('${key}','${result[key]['titles'][i]}')">X</label>` : ""}</li>`
+        }
+        div.innerHTML = `<div class="mvl"><h3>${result[key]['name']}</h3>${`<h4>${type != 0 ? result[key]["username"]: ""}</h4>`}</div>${
+            x.length == 0 && type == 0 ? `<h5 onclick="del_list('${key}')">Delete</h5>` : ""
+        }${
+            type == 1 ? `<h5 onclick="unsub_list('${key}')">Unsubscribe</h5>` : ""
+        }
+        ${
+            type == 2 ? `<h5 id="subunsub-${key}" onclick="subunsub_list('${key}', ${result[key]['subscribed']})">${result[key]['subscribed'] ? "Unsubscribe" : "Subscribe"}</h5>` : ""
+        }<ul>${x}</ul>`
+        elem.append(div);
+    })
+};

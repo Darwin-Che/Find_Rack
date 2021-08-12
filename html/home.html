@@ -29,9 +29,25 @@
         text-decoration: none;
     }
 
-    a:hover {
+    a:hover, h5:hover {
         color: grey;
         background-color: transparent;
+    }
+    .dispnone {
+        display: none;
+    }
+    #list-out {
+        text-align: left;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    h5 {
+        margin: 0;
+    }
+    .mvl {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
     }
 </style>
 </head>
@@ -70,12 +86,12 @@
         <h2>Search for list by name:</h2>
         <input id="get_lists_name" type="text" placeholder="List name"/>
         <button onclick="get_lists_by_name(this)">Go!</button>
-        <pre class="out"></pre>
+        <div id="list-out"></div>
         <h2>Suggest movie</h2>
         <label>Suggest a movie by genre:</label>
         <select id="suggest_movie_genre_selector" class='genre-selector' name='genres'></select>
         <button onclick="suggest_movie(this)">Go!</button>
-        <pre class="out"></pre>
+        
     </div>
     
 

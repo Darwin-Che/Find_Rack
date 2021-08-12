@@ -1,21 +1,3 @@
-function formatLists(elem, result, type) {
-    Object.keys(result).forEach(key => {
-        const div = document.createElement("div")
-        div.setAttribute("id", key)
-        x = ""
-        for (let i = 0; i < result[key]['titles'].length; ++i) {
-            x += `<li class="mvl" id="${key}-${result[key]['titles'][i]}"><a href="/movie.html?m=${result[key]['titles'][i]}">${result[key]['titlenames'][i]}</a>${type == 0 ? `<label class="btn" onclick="rmlist('${key}','${result[key]['titles'][i]}')">X</label>` : ""}</li>`
-        }
-        div.innerHTML = `<h3>${result[key]['name']}</h3>${
-            x.length == 0 && type == 0 ? `<h5 onclick="del_list('${key}')">Delete</h5>` : ""
-        }${
-            type == 1 ? `<h5 onclick="unsub_list('${key}')">Unsubscribe</h5>` : ""
-        }<ul>${x}</ul>`
-        elem.append(div);
-        console.log(result[key]['name'])
-    })
-};
-
 document.addEventListener("DOMContentLoaded", async function() {
     loggedIn = checkLogin();
     userid = sessionStorage.getItem("userid");
@@ -69,5 +51,23 @@ async function rmlist(key, titleid) {
         }
     }   catch(e) {
        alert("Error: " + e.message);
+    }
+}
+
+async function create_list() {
+    const listname = document.getElementById("create_list_name");
+    const token = sessionStorage.getItem("JWT_token");
+    try {
+        const result = await post('/api/lists', {
+            listname: listname.value,
+            token: token
+        });
+        const div = document.createElement("div")
+        div.setAttribute("id", result.listid)
+        div.innerHTML = `<div class="mvl"><h3>${listname.value}</h3></div><h5 onclick="del_list('${result.listid}')">Delete</h5><ul></ul>`
+        //outText = "Created list: " + listname.value + "\nid: " + result.listid;
+        document.getElementById("my-lists").appendChild(div)
+    }   catch(e) {
+        alert("Error: " + e.message);
     }
 }

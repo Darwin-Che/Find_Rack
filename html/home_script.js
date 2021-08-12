@@ -45,6 +45,42 @@ async function query_movies_fe(element) {
     }
 }
 
+async function suggest_movie(element) {
+    const movie_selector = document.getElementById('suggest_movie_genre_selector');
+    const genre = movie_selector.value;
+    try {
+        const result = await post('/api/suggest', {genre});
+        window.location.assign(`/movie.html?m=${result[0]}`)
+    } catch(e) {
+        alert("Error " + e.message)
+    }
+}
+
+async function get_lists_by_name(element) {
+    const name = document.getElementById("get_lists_name");
+    try {
+        const lists = await get_lists_internal(element, {name: name.value});
+        formatLists(document.getElementById('list-out'),lists, 2);
+    } catch(e) {
+       alert("Error: " + e.message);
+    }
+}
+
+async function subunsub_list(key, subscribed) {
+    let token = sessionStorage.getItem("JWT_token")
+    try {
+        await post('/api/subscriptions', {
+            token,
+            listid: key,
+            subscribe: !subscribed
+        });
+        document.getElementById(`subunsub-${key}`).innerHTML = !subscribed ? "Unsubscribe" : "Subscribe";
+        document.getElementById(`subunsub-${key}`).setAttribute("onclick", `subunsub_list('${key}', ${!subscribed})`);
+    } catch(e) {
+        alert("Error: " + e.message);
+    }
+}
+
 document.addEventListener("DOMContentLoaded", function() { 
     loggedIn = checkLogin();
     if (loggedIn) {
@@ -53,5 +89,6 @@ document.addEventListener("DOMContentLoaded", function() {
         a.innerHTML = "Your Profile"
         document.getElementById("main").insertBefore(a, document.getElementById("main").children[2])
         document.getElementById("main").insertBefore(document.createElement("br"), document.getElementById("main").children[3])
+        document.getElementById("loggedinsec").setAttribute("class", "")
     }
 });

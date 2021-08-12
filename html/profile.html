@@ -39,6 +39,9 @@
         text-align: left;
     }
 
+    h5 {
+        margin: 0;
+    }
     h5:hover, .btn {
         color: grey;
     }
@@ -65,6 +68,9 @@
         <a id="signin-link" href="/signin.html">Sign In</a>
     </div>
     <h2>Lists</h2>
+    <label>Create List: </label>
+        <input id="create_list_name" type="text" placeholder="List name"/>
+        <button onclick="create_list()">Go!</button>
     <div id="my-lists"></div>
     <h2>Subscriptions</h2>
     <div id="subscribed-lists">
