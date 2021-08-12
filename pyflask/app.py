@@ -255,7 +255,7 @@ def get_lists():
         searcherid = None
 
     builder = []
-    params = []
+    params = [searcherid]
     userid = request.args.get('userid')
     name = request.args.get('name')
     subscribed = request.args.get('subscribed')
@@ -267,7 +267,6 @@ def get_lists():
         params.append(sql_like(name))
     if subscribed:
         builder.append('S.subscribeto IS NOT NULL')
-    params.append(searcherid)
     if builder:
         conditions = 'WHERE ' + ' AND '.join(builder)
     else:
