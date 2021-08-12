@@ -47,4 +47,11 @@ async function query_movies_fe(element) {
 
 document.addEventListener("DOMContentLoaded", function() { 
     loggedIn = checkLogin();
+    if (loggedIn) {
+        const a = document.createElement("a");
+        a.href = "/profile.html"
+        a.innerHTML = "Your Profile"
+        document.getElementById("main").insertBefore(a, document.getElementById("main").children[2])
+        document.getElementById("main").insertBefore(document.createElement("br"), document.getElementById("main").children[3])
+    }
 });

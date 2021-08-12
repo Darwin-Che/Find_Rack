@@ -283,12 +283,13 @@ def get_lists():
     response = {}
     with cnx() as conn:
         with conn.cursor() as cursor:
-            cursor.execute(f"SELECT listname, Movies.titleid, listid, subscribeto, U.userid, U.username FROM (SELECT Lists.listid AS listid, listname, titleid, userid FROM Lists LEFT JOIN List_Movie ON Lists.listid=List_Movie.listid {conditions}) AS E LEFT JOIN Movies on E.titleid=Movies.titleid LEFT JOIN Subscription ON Subscription.subscriber = %s AND Subscription.subscribeto = E.listid JOIN Users AS U ON E.userid = U.userid;", params)
+            cursor.execute(f"SELECT listname, Movies.titleid, listid, subscribeto, U.userid, U.username, title FROM (SELECT Lists.listid AS listid, listname, titleid, userid FROM Lists LEFT JOIN List_Movie ON Lists.listid=List_Movie.listid) AS E LEFT JOIN Movies on E.titleid=Movies.titleid LEFT JOIN Subscription AS S ON S.subscriber = %s AND S.subscribeto = E.listid JOIN Users AS U ON E.userid = U.userid {conditions};", params)
             for row in cursor.fetchall():
                 if (row[2] in response):
                     response[row[2]]['titles'].append(row[1])
+                    response[row[2]]['titlenames'].append(row[6])
                 else:
-                    response[row[2]] = {'name': row[0], 'subscribed': row[3] is not None, 'userid': row[4], 'username': row[5], 'titles': [row[1]] if row[1] else []} 
+                    response[row[2]] = {'name': row[0], 'subscribed': row[3] is not None, 'userid': row[4], 'username': row[5], 'titles': [row[1]] if row[1] else [], "titlenames": [[row[6]] if row[6] else []]} 
             return json.dumps(response)
             
 @app.route('/api/lists', methods=['POST'])
@@ -316,6 +317,7 @@ def create_list():
 def add_to_list():
     listid = request.json.get('listid')
     titleid = request.json.get('titleid')
+    delete = request.json.get('delete')
     if listid is None or len(listid) <= 0:
         raise AppError('listid cannot be none!')
     if titleid is None or len(titleid) <= 0:
@@ -323,7 +325,10 @@ def add_to_list():
     with cnx() as conn:
         try:
             with conn.cursor() as cursor:
-                cursor.execute("INSERT INTO List_Movie VALUES (%s, %s)", (listid, titleid))
+                if delete is None:
+                    cursor.execute("INSERT INTO List_Movie VALUES (%s, %s)", (listid, titleid))
+                else:
+                    cursor.execute("DELETE FROM List_Movie WHERE listid = %s AND titleid = %s;", (listid, titleid))
             conn.commit()
         except mysql.connector.IntegrityError as err:
             raise AppError('A list with this name already exists!')

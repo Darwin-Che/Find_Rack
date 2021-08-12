@@ -1,6 +1,6 @@
 <head>
     <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
-        <style>
+    <style>
     body {
         background-color: #2b2d2f;
         color: #ffffff;
@@ -33,6 +33,25 @@
         color: grey;
         background-color: transparent;
     }
+    #my-lists, #subscribed-lists {
+        max-width: 400px;
+        margin: 0 auto;
+        text-align: left;
+    }
+
+    h5:hover, .btn {
+        color: grey;
+    }
+
+    .btn:hover {
+        color: white;
+    }
+
+    .mvl {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
 </style>
 </head>
 <body>
@@ -45,12 +64,11 @@
         <br/>
         <a id="signin-link" href="/signin.html">Sign In</a>
     </div>
-    <h1 id="username">Loading...</h1>
     <h2>Lists</h2>
-    <ul id="my-lists">    </ul>
+    <div id="my-lists"></div>
     <h2>Subscriptions</h2>
-    <ul id="subscribed-lists">
-    </ul>
+    <div id="subscribed-lists">
+    </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
 <script src="/script.js"></script>

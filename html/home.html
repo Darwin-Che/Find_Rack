@@ -11,7 +11,7 @@
         flex-direction: row;
         justify-content: center;  
     }
-    .main {
+    #main {
         text-align: center;
     }
     ul {
@@ -33,14 +33,13 @@
         color: grey;
         background-color: transparent;
     }
-
 </style>
 </head>
 <body>
 <header class="header">
     <h1 href="/home.html">Movie List</h1>
 </header>
-<div class="main">
+<div id="main">
     <label id="signin"></label>
     <br/>
     <a id="signin-link" href="/signin.html">Sign In</a>
@@ -66,6 +65,20 @@
     <br/>
     <button onclick="query_movies_fe(this)">Go!</button>
     <ul id="movie-search"></ul>
+
+    <div class="dispnone" id="loggedinsec">
+        <h2>Search for list by name:</h2>
+        <input id="get_lists_name" type="text" placeholder="List name"/>
+        <button onclick="get_lists_by_name(this)">Go!</button>
+        <pre class="out"></pre>
+        <h2>Suggest movie</h2>
+        <label>Suggest a movie by genre:</label>
+        <select id="suggest_movie_genre_selector" class='genre-selector' name='genres'></select>
+        <button onclick="suggest_movie(this)">Go!</button>
+        <pre class="out"></pre>
+    </div>
+    
+
 </div>
 <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
 <script src="/script.js"></script>
