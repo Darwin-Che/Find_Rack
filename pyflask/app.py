@@ -209,6 +209,14 @@ def query_users():
             cursor.execute("SELECT userid, username FROM Users")
             return json.dumps(cursor.fetchall())
 
+@app.route('/api/username')
+def query_username():
+    userid = request.args.get('userid')
+    with cnx() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT username FROM Users WHERE userid = %s", (userid,))
+            return json.dumps(cursor.fetchall())
+
 @app.route('/api/users', methods=['POST'])
 def create_user():
     username = request.json.get('username')
@@ -272,7 +280,7 @@ def get_lists():
     response = {}
     with cnx() as conn:
         with conn.cursor() as cursor:
-            cursor.execute(f"SELECT listname, title, listid, subscribeto, U.userid, U.username FROM (SELECT Lists.listid AS listid, listname, titleid, userid FROM Lists LEFT JOIN List_Movie ON Lists.listid=List_Movie.listid {conditions}) AS E LEFT JOIN Movies on E.titleid=Movies.titleid LEFT JOIN Subscription ON Subscription.subscriber = %s AND Subscription.subscribeto = E.listid JOIN Users AS U ON E.userid = U.userid;", params)
+            cursor.execute(f"SELECT listname, Movies.titleid, listid, subscribeto, U.userid, U.username FROM (SELECT Lists.listid AS listid, listname, titleid, userid FROM Lists LEFT JOIN List_Movie ON Lists.listid=List_Movie.listid {conditions}) AS E LEFT JOIN Movies on E.titleid=Movies.titleid LEFT JOIN Subscription ON Subscription.subscriber = %s AND Subscription.subscribeto = E.listid JOIN Users AS U ON E.userid = U.userid;", params)
             for row in cursor.fetchall():
                 if (row[2] in response):
                     response[row[2]]['titles'].append(row[1])

@@ -98,10 +98,6 @@ async function query_movies(element) {
     }
 }
 
-async function query_comments(titleid) {
-
-}
-
 async function query_users(element) {
     let outText;
     try {

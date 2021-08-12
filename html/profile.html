@@ -33,42 +33,27 @@
         color: grey;
         background-color: transparent;
     }
-
 </style>
 </head>
 <body>
 <header class="header">
-    <h1 href="/home.html">Movie List</h1>
+    <h1><a href="/home.html">Movie List</a></h1>
 </header>
 <div class="main">
-    <label id="signin"></label>
-    <br/>
-    <a id="signin-link" href="/signin.html">Sign In</a>
-    <h2>Search for movies</h2>
-    <label>Title:</label>
-    <input id="query_movies_title" type="text" placeholder="Title"/>
-    <br/>
-
-    <label>Cast member:</label>
-    <input id="query_movies_cast" type="text" placeholder="Cast member"/>
-    <br/>
-
-    <label>Release year:</label>
-    <input id="query_movies_release_year" type="text" placeholder="Release year"/>
-    <br/>
-
-    <label>Minimum runtime (in mins):</label>
-    <input id="query_movies_min_runtime" type="text" placeholder="Minimum runtime"/>
-    <br/>
-
-    <label>Maximum runtime (in mins):</label>
-    <input id="query_movies_max_runtime" type="text" placeholder="Maximum runtime"/>
-    <br/>
-    <button onclick="query_movies_fe(this)">Go!</button>
-    <ul id="movie-search"></ul>
+    <div class="centre">
+        <label id="signin"></label>
+        <br/>
+        <a id="signin-link" href="/signin.html">Sign In</a>
+    </div>
+    <h1 id="username">Loading...</h1>
+    <h2>Lists</h2>
+    <ul id="my-lists">    </ul>
+    <h2>Subscriptions</h2>
+    <ul id="subscribed-lists">
+    </ul>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
 <script src="/script.js"></script>
-<script src="/home_script.js"></script>
+<script src="/profile_script.js"></script>
 </body>
     
