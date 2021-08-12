@@ -1,0 +1,80 @@
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+        <style>
+    body {
+        background-color: #2b2d2f;
+        color: #ffffff;
+        font-family: 'Open Sans';
+    }
+    header {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;  
+    }
+    .main {
+        text-align: center;
+    }
+    ul {
+        list-style: none;
+    }
+    a:link {
+        color: white;
+        background-color: transparent;
+        text-decoration: none;
+    }
+
+    a:visited {
+        color: white;
+        background-color: transparent;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: red;
+        background-color: transparent;
+        text-decoration: underline;
+    }
+
+    a:active {
+        color: yellow;
+        background-color: transparent;
+        text-decoration: underline;
+    }
+</style>
+</head>
+<body>
+<header class="header">
+    <h1>Movie List</h1>
+</header>
+<div class="main">
+    <label id="signin"></label>
+    <br/>
+    <a id="signin-link" href="/signin.html">Sign In</a>
+    <h2>Search for movies</h2>
+    <label>Title:</label>
+    <input id="query_movies_title" type="text" placeholder="Title"/>
+    <br/>
+
+    <label>Cast member:</label>
+    <input id="query_movies_cast" type="text" placeholder="Cast member"/>
+    <br/>
+
+    <label>Release year:</label>
+    <input id="query_movies_release_year" type="text" placeholder="Release year"/>
+    <br/>
+
+    <label>Minimum runtime (in mins):</label>
+    <input id="query_movies_min_runtime" type="text" placeholder="Minimum runtime"/>
+    <br/>
+
+    <label>Maximum runtime (in mins):</label>
+    <input id="query_movies_max_runtime" type="text" placeholder="Maximum runtime"/>
+    <br/>
+    <button onclick="query_movies_fe(this)">Go!</button>
+    <ul id="movie-search"></ul>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
+<script src="/script.js"></script>
+<script src="/home_script.js"></script>
+</body>
+    
