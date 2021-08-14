@@ -8,6 +8,15 @@ add the following lines to `~/.my.cnf`
 secure-file-priv=""
 ```
 
+Or if it doesn't work by still showing permission error, try these 
+```
+/etc/my.cnf
+/etc/mysql/my.cnf
+$MYSQL_HOME/my.cnf
+[datadir]/my.cnf
+~/.my.cnf
+```
+
 ## Python code
 
 We can execute 'python flask/init.py' in the root directory to repopulate the database with desired data
@@ -37,6 +46,12 @@ def loaddata():
 
 As shown in the code segments, we have two options: 
 
+1. load fake sample dataset for all 9 tables. 
+
+	- don't change path_data, since `test/datapath` is where the fake sample data locates. 
+	- change only_imdb to False. 
+
+
 1. load real imdb data for the four tables: to do 
 	1) modify "path\_data" where 'test/datapath' points to the real imdb datasets with file names "movies.scsv", "cast\_movie.scsv", "movie\_genre.scsv", and "casts.scsv"; 
 	2) modify "only_imdb" to True
@@ -44,7 +59,6 @@ As shown in the code segments, we have two options:
 
 
 
-2. load fake small test data for all 9 tables.
 
 
 

@@ -27,26 +27,45 @@ Note that the application will automatically create the required tables and popu
 1. Install Python 3
 2. Install the dependencies with: `pip install -r pyflask/requirement.txt`
 
-### Create User
+### Option 1 : using online prepared database
+
+```
+export DATABASE_PORT='13306'
+export DATABASE_HOST='burst.srv.vepta.org' 
+```
+
+Then go to directory `pyflask`, and run
+
+```
+flask run
+```
+
+Then use the application at `${server_by_flask}/home`
+
+### Option 2 : creating local database
+
+#### Create User
 Execute the content of create_user.txt in mysql root user to have user "348proj" and passwd "dev000000".
 
-### Init db and load sample data
-Run in the following in the project directory (the folder where this README is):
+#### Init db and load sample data
 
-```
-python pyflask/init.py
-```
+See 'test/loaddata.md' for more info
 
-Will create the database called 'MovieList' and load in some sample data.
-
-### Start the application
+#### Start the application
 Run: `flask run --host=0.0.0.0` inside the `pyflask` directory.
 
 You can now connect to the application here: http://127.0.0.1:5000.
 
-## Testing
+## Testing 1
 - The testing code for task 5 is in the `pyflask/test-sample.py`
+- This code depends on fake data set configuration for `init.py`, see `test/loaddata.md` for more info
 - Some sample output of running the above test program can be found here: `test/test-sample.out`
+
+
+## Testing 2 
+- The testing code is at `test/test-production.sh`
+- This code depends on a working database with fake or real data
+- Sample output can be found here: `test/test-production.out`
 
 ## Loading in real data
 Tools for transforming and loading the IMDB database can be found in the `transformation_scripts` folder.
